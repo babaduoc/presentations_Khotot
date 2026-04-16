@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phương Án Vận Hành Pilot 20 Đại Lý — Web ETZ Khotot.vn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --bg-card: rgba(17,24,39,0.75);
+            --blue: #3b82f6; --cyan: #06b6d4; --purple: #8b5cf6;
+            --green: #10b981; --orange: #f59e0b; --red: #ef4444; --pink: #ec4899;
+            --text: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
+            --border: rgba(148,163,184,0.1); --glass: rgba(255,255,255,0.04);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow:hidden; height:100vh; width:100vw; }
+
+        /* ===== SLIDES ===== */
+        .slides-wrapper { width:100vw; height:100vh; position:relative; }
+        .slide {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            display:flex; flex-direction:column; justify-content:center; align-items:center;
+            padding:50px 80px 70px; opacity:0; transform:translateX(60px);
+            transition:opacity .45s ease, transform .45s ease;
+            pointer-events:none; overflow-y:auto;
+        }
+        .slide.active { opacity:1; transform:translateX(0); pointer-events:all; }
+        .slide.exit-left { opacity:0; transform:translateX(-60px); }
+
+        /* ===== NAV ===== */
+        .nav-bar {
+            position:fixed; bottom:0; left:0; right:0; height:52px;
+            background:rgba(10,14,26,.95); backdrop-filter:blur(20px);
+            border-top:1px solid var(--border);
+            display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:100;
+        }
+        .progress-track { flex:1; height:3px; background:rgba(255,255,255,.07); border-radius:4px; margin:0 20px; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--cyan)); border-radius:4px; transition:width .4s ease; }
+        .nav-btn {
+            background:none; border:1px solid var(--border); color:var(--text2);
+            padding:7px 18px; border-radius:8px; cursor:pointer;
+            font-family:'Inter',sans-serif; font-size:13px; font-weight:500; transition:all .2s;
+        }
+        .nav-btn:hover { background:var(--glass); color:var(--text); border-color:var(--blue); }
+        .slide-counter { color:var(--text3); font-size:13px; font-weight:500; min-width:56px; text-align:center; }
+
+        /* ===== DOT NAV ===== */
+        .dot-nav { position:fixed; right:20px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:9px; z-index:100; }
+        .dot { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.12); cursor:pointer; border:none; transition:all .3s; }
+        .dot.active { background:var(--cyan); box-shadow:0 0 10px rgba(6,182,212,.5); transform:scale(1.3); }
+
+        /* ===== TYPE ===== */
+        .label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:3px; color:var(--cyan); margin-bottom:14px; }
+        h1 { font-size:clamp(28px,4vw,52px); font-weight:800; line-height:1.15; margin-bottom:14px; text-align:center; }
+        h2 { font-size:clamp(22px,3vw,38px); font-weight:800; }
+        .g { background:linear-gradient(135deg,var(--blue),var(--cyan),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .section-hd { text-align:center; margin-bottom:28px; width:100%; max-width:1100px; }
+        .section-hd p { font-size:14px; color:var(--text2); margin-top:7px; }
+        .subtitle { font-size:17px; color:var(--text2); text-align:center; max-width:680px; line-height:1.6; margin-bottom:36px; }
+
+        /* ===== CARDS ===== */
+        .grid { display:grid; gap:18px; width:100%; max-width:1100px; }
+        .g2 { grid-template-columns:1fr 1fr; }
+        .g3 { grid-template-columns:1fr 1fr 1fr; }
+        .g4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+        .card {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:24px;
+            position:relative; overflow:hidden; transition:all .3s ease;
+        }
+        .card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
+        .card:hover { border-color:rgba(148,163,184,.2); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,0,0,.3); }
+        .card-icon { font-size:28px; margin-bottom:12px; }
+        .card-title { font-size:15px; font-weight:700; margin-bottom:7px; }
+        .card-desc { font-size:13px; color:var(--text2); line-height:1.65; }
+        .cb::before { background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+        .cg::before { background:linear-gradient(90deg,var(--green),#34d399); }
+        .co::before { background:linear-gradient(90deg,var(--orange),#fbbf24); }
+        .cp::before { background:linear-gradient(90deg,var(--purple),var(--pink)); }
+        .cr::before { background:linear-gradient(90deg,var(--red),#f97316); }
+        .cc::before { background:linear-gradient(90deg,var(--cyan),var(--blue)); }
+
+        /* ===== STAT ===== */
+        .stat-row { display:flex; gap:18px; width:100%; max-width:1100px; margin-bottom:22px; }
+        .stat-box { flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:13px; padding:22px; text-align:center; }
+        .stat-num { font-size:34px; font-weight:800; margin-bottom:4px; }
+        .stat-lbl { font-size:12px; color:var(--text2); }
+
+        /* ===== TABLE ===== */
+        .tbl { width:100%; max-width:1100px; border-collapse:separate; border-spacing:0; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+        .tbl th { background:rgba(59,130,246,.07); padding:13px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--cyan); text-align:left; border-bottom:1px solid var(--border); }
+        .tbl td { padding:13px 16px; font-size:13px; color:var(--text2); border-bottom:1px solid var(--border); vertical-align:top; line-height:1.5; }
+        .tbl tr:last-child td { border-bottom:none; }
+        .tbl tr:hover td { background:var(--glass); }
+        .tbl td:first-child { font-weight:600; color:var(--text); white-space:nowrap; }
+
+        /* ===== BADGES ===== */
+        .badge { display:inline-flex; align-items:center; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; margin-right:5px; margin-bottom:3px; }
+        .bsd { background:rgba(6,182,212,.14); color:#22d3ee; }
+        .bsa { background:rgba(59,130,246,.14); color:#60a5fa; }
+        .bkt { background:rgba(16,185,129,.14); color:#34d399; }
+        .bkh { background:rgba(245,158,11,.14); color:#fbbf24; }
+        .bit { background:rgba(139,92,246,.14); color:#a78bfa; }
+        .bkd { background:rgba(236,72,153,.14); color:#f472b6; }
+
+        /* ===== FLOW STEPS ===== */
+        .flow-wrap { width:100%; max-width:1100px; }
+        .fstep { display:flex; align-items:flex-start; gap:18px; margin-bottom:5px; position:relative; }
+        .fmarker { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; position:relative; z-index:2; }
+        .fmarker.fb { background:rgba(59,130,246,.14); color:var(--blue); border:1px solid rgba(59,130,246,.3); }
+        .fmarker.fg { background:rgba(16,185,129,.14); color:var(--green); border:1px solid rgba(16,185,129,.3); }
+        .fmarker.fo { background:rgba(245,158,11,.14); color:var(--orange); border:1px solid rgba(245,158,11,.3); }
+        .fmarker.fp { background:rgba(139,92,246,.14); color:var(--purple); border:1px solid rgba(139,92,246,.3); }
+        .fmarker.fc2 { background:rgba(6,182,212,.14); color:var(--cyan); border:1px solid rgba(6,182,212,.3); }
+        .fline { position:absolute; left:19px; top:40px; bottom:-5px; width:2px; background:linear-gradient(180deg,var(--blue),transparent); z-index:1; }
+        .fstep:last-child .fline { display:none; }
+        .fbody { flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:11px; padding:16px 20px; }
+        .fbody h4 { font-size:14px; font-weight:700; margin-bottom:5px; }
+        .fbody p { font-size:12.5px; color:var(--text2); line-height:1.6; }
+
+        /* ===== INFO BOXES ===== */
+        .hbox { background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(6,182,212,.06)); border:1px solid rgba(59,130,246,.2); border-radius:13px; padding:20px 28px; width:100%; max-width:1100px; margin-top:18px; }
+        .hbox h4 { font-size:13px; font-weight:700; color:var(--cyan); margin-bottom:7px; }
+        .hbox p, .hbox li { font-size:13px; color:var(--text2); line-height:1.7; }
+        .wbox { background:rgba(245,158,11,.05); border:1px solid rgba(245,158,11,.2); border-radius:13px; padding:18px 24px; width:100%; max-width:1100px; margin-top:14px; }
+        .wbox h4 { font-size:13px; font-weight:700; color:var(--orange); margin-bottom:7px; }
+        .wbox p { font-size:12.5px; color:var(--text2); line-height:1.65; }
+        .rbox { background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.2); border-radius:13px; padding:18px 24px; width:100%; max-width:1100px; margin-top:14px; }
+        .rbox h4 { font-size:13px; font-weight:700; color:var(--red); margin-bottom:7px; }
+        .rbox p { font-size:12.5px; color:var(--text2); line-height:1.65; }
+
+        /* ===== CHECKLIST ===== */
+        .chk { list-style:none; padding:0; }
+        .chk li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:9px; }
+        .chk li::before { content:'✓'; flex-shrink:0; width:20px; height:20px; background:rgba(16,185,129,.14); color:var(--green); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+        /* ===== LANES ===== */
+        .lanes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; width:100%; max-width:1100px; }
+        .lane { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:22px; }
+        .lane-hd { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+        .lane-ico { font-size:26px; }
+        .lane-title { font-size:15px; font-weight:700; }
+        .lane-tag { font-size:10px; font-weight:600; padding:3px 8px; border-radius:6px; margin-left:auto; }
+        .lane ol { font-size:12.5px; color:var(--text2); line-height:1.75; padding-left:16px; }
+        .lane ol li { margin-bottom:3px; }
+
+        /* ===== TWO-COL ===== */
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:22px; width:100%; max-width:1100px; }
+
+        /* ===== TIMELINE ===== */
+        .timeline { display:flex; width:100%; max-width:1100px; position:relative; margin-bottom:24px; }
+        .timeline::before { content:''; position:absolute; top:27px; left:0; right:0; height:3px; background:rgba(255,255,255,.06); border-radius:2px; }
+        .tl-item { flex:1; text-align:center; position:relative; padding:0 6px; }
+        .tl-dot { width:18px; height:18px; border-radius:50%; margin:18px auto 14px; position:relative; z-index:2; }
+        .tl-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+        .tl-desc { font-size:11px; color:var(--text2); line-height:1.5; }
+
+        /* ===== BG GLOW ===== */
+        .glow { position:absolute; border-radius:50%; filter:blur(120px); opacity:.11; pointer-events:none; }
+
+        /* ===== MERMAID SLIDE ===== */
+        .mermaid-wrap {
+            width:100%; max-width:1100px;
+            background:rgba(15,23,42,0.6);
+            border:1px solid rgba(59,130,246,0.15);
+            border-radius:16px;
+            padding:24px 32px;
+            overflow-x:auto;
+        }
+        .mermaid-wrap .mermaid { display:flex; justify-content:center; }
+        .mermaid svg { max-width:100%; height:auto; }
+
+        /* ===== ANIM ===== */
+        @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+        .slide.active .ai { animation:fadeUp .5s ease forwards; opacity:0; }
+        .slide.active .ai:nth-child(1){animation-delay:.1s}
+        .slide.active .ai:nth-child(2){animation-delay:.2s}
+        .slide.active .ai:nth-child(3){animation-delay:.3s}
+        .slide.active .ai:nth-child(4){animation-delay:.4s}
+        .slide.active .ai:nth-child(5){animation-delay:.5s}
+        .slide.active .ai:nth-child(6){animation-delay:.6s}
+        .slide.active .ai:nth-child(7){animation-delay:.7s}
+        .key-hint { position:fixed; bottom:62px; left:50%; transform:translateX(-50%); font-size:11px; color:var(--text3); opacity:.45; z-index:50; }
+        .key-hint kbd { display:inline-block; padding:2px 7px; border:1px solid rgba(255,255,255,.14); border-radius:4px; font-family:'Inter',sans-serif; font-size:10px; margin:0 2px; }
+    </style>
+</head>
+<body>
+
+<div class="slides-wrapper">
+
+    <!-- ============ SLIDE 0: COVER ============ -->
+    <div class="slide active">
+        <div class="glow" style="width:600px;height:600px;background:var(--blue);top:-200px;right:-100px;"></div>
+        <div class="glow" style="width:400px;height:400px;background:var(--purple);bottom:-100px;left:-50px;"></div>
+        <div class="label ai">PHƯƠNG ÁN VẬN HÀNH — PILOT 20 ĐẠI LÝ</div>
+        <h1 class="ai">Quy Trình Phối Hợp<br><span class="g">Liên Phòng Ban</span></h1>
+        <p class="subtitle ai">Chạy thử nghiệm Web ETZ — Khotot.vn với 20 Sub-Dealer đầu tiên.<br>Kiểm chứng toàn bộ luồng: Đăng ký → Mua hàng → Giao hàng → Hậu mãi.</p>
+        <div class="stat-row ai">
+            <div class="stat-box"><div class="stat-num" style="color:var(--cyan)">20</div><div class="stat-lbl">Đại lý thử nghiệm</div></div>
+            <div class="stat-box"><div class="stat-num" style="color:var(--blue)">5</div><div class="stat-lbl">Phòng ban phối hợp</div></div>
+            <div class="stat-box"><div class="stat-num" style="color:var(--purple)">7</div><div class="stat-lbl">SOP chuẩn hóa</div></div>
+            <div class="stat-box"><div class="stat-num" style="color:var(--green)">3</div><div class="stat-lbl">Kênh vận chuyển</div></div>
+        </div>
+        <p class="ai" style="font-size:12px;color:var(--text3);margin-top:10px;">📅 14/04/2026 &nbsp;|&nbsp; 🏢 DSS Web Sale Platform &nbsp;|&nbsp; 🌐 Khotot.vn</p>
+    </div>
+
+    <!-- ============ SLIDE 1: TỔNG QUAN DỰ ÁN ============ -->
+    <div class="slide">
+        <div class="glow" style="width:500px;height:500px;background:var(--cyan);top:-150px;left:-100px;"></div>
+        <div class="section-hd ai">
+            <div class="label">Slide 1</div>
+            <h2>Tổng Quan Dự Án <span class="g">Web ETZ</span></h2>
+            <p>Nền tảng B2B chuyên biệt phân phối hàng hóa từ DSS tới Sub-Dealer qua mạng lưới Master Dealer tỉnh</p>
+        </div>
+        <div class="grid g3 ai">
+            <div class="card cb"><div class="card-icon">🏢</div><div class="card-title">DSS Admin</div><div class="card-desc">Trung tâm điều phối từ HN/HCM. Duyệt sản phẩm, quản lý danh mục, giá bán, chương trình KM, kết nối API toàn hệ thống.</div></div>
+            <div class="card co"><div class="card-icon">🏪</div><div class="card-title">Master Dealer (MD)</div><div class="card-desc">Đối tác kho tỉnh — quản lý kho riêng, nhận đơn từ SD trong khu vực, đóng gói giao hàng, theo dõi doanh số cá nhân.</div></div>
+            <div class="card cc"><div class="card-icon">💼</div><div class="card-title">Sub-Dealer (SD)</div><div class="card-desc">Đại lý mua hàng — đăng nhập OTP Zalo, xem sản phẩm theo kho gần nhất, theo dõi đơn hàng realtime qua Zalo OA.</div></div>
+        </div>
+        <div class="hbox ai">
+            <h4>🎯 Mục tiêu Pilot Giai đoạn 1</h4>
+            <p>Vận hành kho nội bộ ETZ Miền Nam, chạy thử nghiệm với <strong>20 SD thân thiết</strong> để kiểm chứng toàn bộ luồng nghiệp vụ trước khi mở rộng kết nối kho MD tỉnh ở Giai đoạn 2.</p>
+        </div>
+    </div>
+
+
+
+    <!-- ============ SLIDE 3: SƠ ĐỒ PHỐI HỢP ============ -->
+    <div class="slide">
+        <div class="section-hd ai">
+            <div class="label">Slide 3</div>
+            <h2>Sơ Đồ Phối Hợp <span class="g">Liên Phòng Ban</span></h2>
+            <p>5 bộ phận tham gia trực tiếp vào vận hành Pilot 20 SD</p>
+        </div>
+        <div class="grid g2 ai" style="max-width:1000px;">
+            <div class="card cb" style="grid-column:span 2;text-align:center;">
+                <div class="card-icon">👑</div>
+                <div class="card-title" style="font-size:17px;">SALE ADMIN — Gatekeeper Trung Tâm</div>
+                <div class="card-desc" style="font-size:13.5px;">Tiếp nhận đơn từ Web → Kiểm tra tồn kho MISA → Tạo Đơn DH → Phân luồng vận chuyển → Theo dõi đến khi Hoàn tất</div>
+            </div>
+            <div class="card cg">
+                <div class="card-icon">💰</div><div class="card-title">KẾ TOÁN</div>
+                <div class="card-desc"><strong>Kiểm tra thanh toán</strong> — Xác nhận tiền vào → Đẩy mã BH lên MISA → Xuất Hóa đơn + Phiếu xuất kho → Hoàn tiền khi cần</div>
+            </div>
+            <div class="card co">
+                <div class="card-icon">📦</div><div class="card-title">KHO ADMIN</div>
+                <div class="card-desc"><strong>Đóng gói & Giao hàng</strong> — Nhận lệnh mã BH → Kiểm hàng, đóng gói → In vận đơn → Bàn giao Viettel Post / Chành xe / Khách lấy</div>
+            </div>
+            <div class="card cp">
+                <div class="card-icon">💻</div><div class="card-title">IT / KỸ THUẬT</div>
+                <div class="card-desc"><strong>Hỗ trợ hệ thống</strong> — Đảm bảo Web + API ổn định, xử lý lỗi đăng nhập, thanh toán, kết nối Viettel Post & SePay</div>
+            </div>
+            <div class="card cr">
+                <div class="card-icon">📊</div><div class="card-title">KINH DOANH</div>
+                <div class="card-desc"><strong>Lựa chọn & Hỗ trợ SD</strong> — Danh sách 20 SD Pilot, chính sách giá thử nghiệm, hỗ trợ thao tác Web, thu thập feedback</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 4: LUỒNG VẬN HÀNH TỔNG THỂ ============ -->
+    <div class="slide" style="padding-top:32px;">
+        <div class="section-hd ai">
+            <div class="label">Slide 4</div>
+            <h2>Luồng Vận Hành <span class="g">Tổng Thể</span></h2>
+            <p>Từ khi SD đăng ký đến khi hoàn tất đơn hàng</p>
+        </div>
+        <div class="timeline ai">
+            <div class="tl-item"><div class="tl-label" style="color:var(--blue)">Phase 1</div><div class="tl-dot" style="background:var(--blue);box-shadow:0 0 14px rgba(59,130,246,.4);"></div><div class="tl-desc"><strong>Đăng ký</strong><br>SD tạo tài khoản</div></div>
+            <div class="tl-item"><div class="tl-label" style="color:var(--cyan)">Phase 2</div><div class="tl-dot" style="background:var(--cyan);box-shadow:0 0 14px rgba(6,182,212,.4);"></div><div class="tl-desc"><strong>Xác thực</strong><br>Admin duyệt SD</div></div>
+            <div class="tl-item"><div class="tl-label" style="color:var(--purple)">Phase 3</div><div class="tl-dot" style="background:var(--purple);box-shadow:0 0 14px rgba(139,92,246,.4);"></div><div class="tl-desc"><strong>Đặt hàng</strong><br>SD mua trên Web</div></div>
+            <div class="tl-item"><div class="tl-label" style="color:var(--green)">Phase 4</div><div class="tl-dot" style="background:var(--green);box-shadow:0 0 14px rgba(16,185,129,.4);"></div><div class="tl-desc"><strong>Xử lý đơn</strong><br>SA + MISA</div></div>
+            <div class="tl-item"><div class="tl-label" style="color:var(--orange)">Phase 5</div><div class="tl-dot" style="background:var(--orange);box-shadow:0 0 14px rgba(245,158,11,.4);"></div><div class="tl-desc"><strong>Giao hàng</strong><br>3 phương thức</div></div>
+            <div class="tl-item"><div class="tl-label" style="color:var(--pink)">Phase 6</div><div class="tl-dot" style="background:var(--pink);box-shadow:0 0 14px rgba(236,72,153,.4);"></div><div class="tl-desc"><strong>Hoàn tất</strong><br>HĐ + Hậu mãi</div></div>
+        </div>
+        <div class="flow-wrap ai">
+            <div class="fstep"><div class="fmarker fc2">1</div><div class="fbody"><h4>🔐 SD Đăng ký tài khoản trên Khotot.vn</h4><p><span class="badge bsd">SD</span> Chế độ Kiểm soát chặt: yêu cầu CCCD + GPKD từ đầu. SD vào được Web nhưng chưa thấy nút mua hàng.</p></div><div class="fline"></div></div>
+            <div class="fstep"><div class="fmarker fb">2</div><div class="fbody"><h4>✅ Sale Admin duyệt tài khoản SD</h4><p><span class="badge bsa">Sale Admin</span> Kiểm tra CCCD, GPKD trên Dashboard → Duyệt/Từ chối trong <strong>24h</strong>. SD được duyệt mới thấy giá và nút mua hàng.</p></div><div class="fline"></div></div>
+            <div class="fstep"><div class="fmarker fp">3</div><div class="fbody"><h4>🛒 SD đặt đơn hàng & Thanh toán</h4><p><span class="badge bsd">SD</span> Chọn sản phẩm từ Kho ETZ MN → Vận chuyển (VTP / Chành / Tại kho) → Thanh toán SePay. <strong>⚠️ Bắt buộc quay video mở hàng khi nhận.</strong></p></div><div class="fline"></div></div>
+            <div class="fstep"><div class="fmarker fb">4</div><div class="fbody"><h4>📋 Sale Admin kiểm tra & Tạo đơn DH trên MISA</h4><p><span class="badge bsa">Sale Admin</span><span class="badge bkt">Kế toán</span> Kiểm tồn kho MISA → Tạo đơn DH → Báo Kế toán → Kế toán xác nhận tiền → Đẩy mã BH (lệnh đóng gói).</p></div><div class="fline"></div></div>
+            <div class="fstep"><div class="fmarker fo">5</div><div class="fbody"><h4>📦 Kho Admin đóng gói & Giao hàng</h4><p><span class="badge bkh">Kho Admin</span> Nhận mã BH → In Phiếu xuất kho → Đóng gói kèm chứng từ → Xử lý theo kênh (xem Slide 5 chi tiết).</p></div><div class="fline"></div></div>
+            <div class="fstep"><div class="fmarker fg">6</div><div class="fbody"><h4>💳 Hoàn tất & Xuất Hóa đơn</h4><p><span class="badge bkt">Kế toán</span><span class="badge bsa">Sale Admin</span> Kế toán xuất HĐ điện tử <strong>trước 17:00</strong> hàng ngày. Sale Admin rà soát đơn treo, cập nhật "Hoàn thành".</p></div></div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 5: 3 KÊNH VẬN CHUYỂN ============ -->
+    <div class="slide">
+        <div class="section-hd ai">
+            <div class="label">Slide 5</div>
+            <h2>3 Kênh <span class="g">Vận Chuyển</span></h2>
+            <p>Mỗi kênh có quy trình xử lý và chứng từ riêng biệt</p>
+        </div>
+        <div class="lanes ai">
+            <div class="lane" style="border-color:rgba(59,130,246,.22);">
+                <div class="lane-hd"><div class="lane-ico">🚚</div><div><div class="lane-title">Viettel Post</div><div style="font-size:11px;color:var(--text3)">Phổ biến nhất</div></div><div class="lane-tag" style="background:rgba(59,130,246,.13);color:var(--blue)">API tự động</div></div>
+                <ol><li>Kho in Phiếu xuất kho từ MISA/Web</li><li>Đóng gói + đặt PXK bên trong kiện</li><li>In vận đơn từ Web VTP hoặc khotot.vn</li><li>Gọi bưu tá lấy hàng</li><li>API tự cập nhật trạng thái giao</li><li><strong>Kế toán xuất HĐ trước 17:00</strong></li></ol>
+            </div>
+            <div class="lane" style="border-color:rgba(245,158,11,.22);">
+                <div class="lane-hd"><div class="lane-ico">🏗️</div><div><div class="lane-title">Chành Xe</div><div style="font-size:11px;color:var(--text3)">Đơn lớn tỉnh xa</div></div><div class="lane-tag" style="background:rgba(245,158,11,.13);color:var(--orange)">≥ 5 triệu</div></div>
+                <ol><li>Chỉ áp dụng đơn ≥ <strong>5.000.000đ</strong></li><li>Kế toán xuất HĐ + PXK <strong>trước khi rời kho</strong></li><li>Kho đóng gói kèm đầy đủ chứng từ</li><li>Chụp ảnh biên nhận + kiện hàng tại chành</li><li>Sale Admin upload ảnh lên Web báo SD</li><li><strong>Sau 2 ngày không phản hồi = Hoàn tất</strong></li></ol>
+            </div>
+            <div class="lane" style="border-color:rgba(16,185,129,.22);">
+                <div class="lane-hd"><div class="lane-ico">🏪</div><div><div class="lane-title">Lấy Tại Kho</div><div style="font-size:11px;color:var(--text3)">SD đến trực tiếp</div></div><div class="lane-tag" style="background:rgba(16,185,129,.13);color:var(--green)">Nhanh nhất</div></div>
+                <ol><li>Kho in PXK + đóng gói sẵn sàng</li><li>Xác nhận <strong>đúng người mua</strong> đến nhận</li><li>SD <strong>ký + ghi họ tên</strong> vào PXK</li><li>Kho cập nhật "Hoàn thành" trên Web ngay</li><li>Sale Admin rà soát đơn treo cuối ngày</li><li><strong>Kế toán xuất HĐ trước 17:00</strong></li></ol>
+            </div>
+        </div>
+        <div class="wbox ai">
+            <h4>⚠️ Quy tắc chung cho mọi kênh</h4>
+            <p>① Kho <strong>KHÔNG</strong> đóng gói khi chưa có mã BH &nbsp;|&nbsp; ② SD <strong>bắt buộc quay video mở hàng</strong> để được hỗ trợ khiếu nại &nbsp;|&nbsp; ③ Xuất HĐ điện tử <strong>trước 17:00</strong> hàng ngày</p>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 6: BẢNG PHÂN CÔNG ============ -->
+    <div class="slide" style="padding-top:32px;">
+        <div class="section-hd ai">
+            <div class="label">Slide 6</div>
+            <h2>Bảng Phân Công <span class="g">Chi Tiết</span></h2>
+            <p>Ma trận trách nhiệm của từng phòng ban trong Pilot</p>
+        </div>
+        <table class="tbl ai">
+            <thead><tr><th>Giai đoạn</th><th>Sale Admin</th><th>Kế toán</th><th>Kho Admin</th><th>IT</th><th>Kinh doanh</th></tr></thead>
+            <tbody>
+                <tr><td>🔐 Đăng ký SD</td><td>Duyệt CCCD, GPKD trong 24h</td><td>—</td><td>—</td><td>OTP Zalo + Web hoạt động</td><td>Chọn 20 SD, hỗ trợ đăng ký</td></tr>
+                <tr><td>🛒 Đặt hàng</td><td>Theo dõi Dashboard liên tục</td><td>—</td><td>—</td><td>Xử lý lỗi thanh toán SePay</td><td>Hỗ trợ SD thao tác Web</td></tr>
+                <tr><td>📋 Tạo đơn</td><td><strong>Tạo DH ≤ 30 phút</strong></td><td>Xác nhận tiền → Đẩy mã BH</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td>📦 Đóng gói</td><td>Theo dõi tiến độ</td><td>Xuất HĐ + PXK (Chành)</td><td><strong>Đóng gói + In vận đơn</strong></td><td>—</td><td>—</td></tr>
+                <tr><td>🚚 Giao hàng</td><td>Upload ảnh biên nhận (Chành)</td><td>—</td><td>Bàn giao VTP/Chành/Khách</td><td>Theo dõi API VTP</td><td>—</td></tr>
+                <tr><td>✅ Hoàn tất</td><td>Rà soát đơn treo cuối ngày</td><td><strong>Xuất HĐ trước 17:00</strong></td><td>Cập nhật Web khi SD nhận</td><td>—</td><td>—</td></tr>
+                <tr><td>🛡️ Hậu mãi</td><td>Xử lý hủy đơn, hoàn tiền</td><td>Chuyển khoản hoàn tiền</td><td>Nhận hàng bảo hành</td><td>Hỗ trợ lỗi hiển thị</td><td>Thu thập feedback SD</td></tr>
+            </tbody>
+        </table>
+        <div class="hbox ai">
+            <h4>📌 Sale Admin = Gatekeeper trung tâm</h4>
+            <p>Mọi thông tin giữa Kho, Kế toán, IT và SD đều phải qua Sale Admin để đảm bảo không sót bước và có log đầy đủ để tra cứu.</p>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 7: KPI & SLA ============ -->
+    <div class="slide">
+        <div class="section-hd ai">
+            <div class="label">Slide 7</div>
+            <h2>KPI & SLA <span class="g">Thử Nghiệm</span></h2>
+            <p>Tiêu chí đánh giá hiệu quả vận hành trong Pilot</p>
+        </div>
+        <div class="grid g2 ai" style="max-width:1000px;">
+            <div class="card cb"><div class="card-icon">⏱️</div><div class="card-title">Sale Admin</div><div class="card-desc"><ul class="chk"><li>Tạo đơn DH MISA trong <strong>≤ 30 phút</strong> từ khi có đơn Web</li><li>Duyệt tài khoản SD mới trong <strong>≤ 24 giờ</strong></li><li>Gọi điện SD trong <strong>≤ 1 giờ</strong> khi hết hàng</li><li>Rà soát đơn treo cuối mỗi buổi làm việc</li></ul></div></div>
+            <div class="card cg"><div class="card-icon">💰</div><div class="card-title">Kế Toán</div><div class="card-desc"><ul class="chk"><li>Kiểm tra tiền + đẩy mã BH kịp thời</li><li>Xuất HĐ điện tử <strong>trước 17:00</strong> hàng ngày</li><li>Hoàn tiền trong <strong>7 ngày</strong> làm việc + gửi biên lai</li></ul></div></div>
+            <div class="card co"><div class="card-icon">📦</div><div class="card-title">Kho Admin</div><div class="card-desc"><ul class="chk"><li><strong>KHÔNG</strong> đóng gói khi chưa có mã BH trên MISA</li><li>Báo Sale Admin <strong>ngay</strong> sau khi hàng rời kho</li><li>Dán nhãn rõ ràng cho đơn Chành xe</li><li>Xác nhận đúng người khi lấy tại kho</li></ul></div></div>
+            <div class="card cp"><div class="card-icon">💻</div><div class="card-title">IT / Kỹ Thuật</div><div class="card-desc"><ul class="chk"><li>Uptime Web + API ≥ <strong>99%</strong> trong Pilot</li><li>Xử lý sự cố hệ thống trong <strong>≤ 2 giờ</strong></li><li>API Viettel Post & SePay hoạt động ổn định</li><li>Log mọi thao tác thêm/xóa/sửa</li></ul></div></div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 8: XỬ LÝ NGOẠI LỆ ============ -->
+    <div class="slide">
+        <div class="section-hd ai">
+            <div class="label">Slide 8</div>
+            <h2>Quy Trình <span class="g">Xử Lý Ngoại Lệ</span></h2>
+            <p>Các tình huống bất thường đã được SOP hóa đầy đủ</p>
+        </div>
+        <div class="two-col ai">
+            <div>
+                <div class="card cr" style="margin-bottom:18px;"><div class="card-icon">🚫</div><div class="card-title">Hết hàng sau khi SD đặt đơn (SOP 03)</div><div class="card-desc"><ol style="padding-left:16px;line-height:1.8;"><li>Kho báo hết → SA <strong>gọi SD trong ≤ 1h</strong></li><li>Tư vấn: Đổi SP tương đương HOẶC Hoàn tiền</li><li>Đổi hàng: Hủy đơn cũ → Xử lý qua Zalo/ĐT</li><li>Hoàn tiền: Báo SD 7 ngày → KT chuyển khoản → Upload biên lai → Hủy đơn</li></ol></div></div>
+                <div class="card co"><div class="card-icon">🔧</div><div class="card-title">Bảo hành ngoài luồng (SOP 04)</div><div class="card-desc"><ol style="padding-left:16px;line-height:1.8;"><li>SD gửi yêu cầu qua <strong>Zalo OA / Hotline</strong></li><li>SA xác minh đơn gốc + S/N trên hệ thống</li><li>Hướng dẫn: Gửi Hãng trực tiếp hoặc gửi về ETZ</li><li>Kho nhận → Ghi chép → Gửi Hãng → Trả SD</li></ol></div></div>
+            </div>
+            <div>
+                <div class="card cp" style="margin-bottom:18px;"><div class="card-icon">💸</div><div class="card-title">Thanh toán lỗi / Không khớp</div><div class="card-desc"><ol style="padding-left:16px;line-height:1.8;"><li>Kế toán phát hiện tiền KHÔNG OK</li><li>Báo Sale Admin kiểm tra lại với SD</li><li>SA xác nhận phương thức thanh toán</li><li>Lỗi hệ thống → Chuyển IT xử lý ngay</li></ol></div></div>
+                <div class="card cc"><div class="card-icon">📱</div><div class="card-title">SD không đăng nhập / Lỗi Web</div><div class="card-desc"><ol style="padding-left:16px;line-height:1.8;"><li>SD liên hệ SA qua Zalo/Hotline</li><li>SA kiểm tra: Chưa duyệt? OTP lỗi? Bị khóa?</li><li>Xử lý: Reset / Duyệt tài khoản / Báo IT</li><li>Ghi log để báo cáo tần suất lỗi cho IT</li></ol></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 9: CHECKLIST CHUẨN BỊ ============ -->
+    <div class="slide" style="padding-top:32px;">
+        <div class="section-hd ai">
+            <div class="label">Slide 9</div>
+            <h2>Checklist <span class="g">Chuẩn Bị Pilot</span></h2>
+            <p>Những việc cần hoàn thành TRƯỚC khi mời 20 SD vào mua hàng</p>
+        </div>
+        <div class="two-col ai">
+            <div>
+                <div class="card cb" style="margin-bottom:16px;"><div class="card-title" style="color:var(--blue)">🏢 Kinh Doanh</div><div class="card-desc"><ul class="chk"><li>Chốt danh sách 20 SD (đa vùng, thân thiết)</li><li>Xác nhận chính sách giá áp dụng trong Pilot</li><li>Tài liệu hướng dẫn SD sử dụng Web</li><li>Kế hoạch KM kích hoạt đơn đầu tiên</li></ul></div></div>
+                <div class="card cp"><div class="card-title" style="color:var(--purple)">💻 IT / Kỹ Thuật</div><div class="card-desc"><ul class="chk"><li>Web khotot.vn stable + test toàn luồng mua hàng</li><li>API Viettel Post kết nối + test tạo vận đơn</li><li>API SePay + webhook hoàn tất</li><li>Zalo OA gửi thông báo đơn hàng hoạt động</li><li>Bật chế độ Duyệt SD = MỞ (Kiểm soát chặt)</li></ul></div></div>
+            </div>
+            <div>
+                <div class="card cg" style="margin-bottom:16px;"><div class="card-title" style="color:var(--green)">💰 Kế Toán</div><div class="card-desc"><ul class="chk"><li>Quy trình kiểm tra tiền + đẩy mã BH MISA</li><li>Template xuất HĐ điện tử chuẩn sẵn sàng</li><li>Quy trình hoàn tiền đã test</li></ul></div></div>
+                <div class="card co"><div class="card-title" style="color:var(--orange)">📦 Kho Admin</div><div class="card-desc"><ul class="chk"><li>Tồn kho MISA khớp hàng thực tế tại kho</li><li>Vật tư đóng gói: Thùng, băng keo, nhãn, PXK</li><li>Liên hệ bưu tá VTP khu vực sẵn sàng</li><li>Danh sách chành xe/nhà xe liên tỉnh</li></ul></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 10: TỔNG KẾT ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--purple);top:-200px;right:-150px;"></div>
+        <div class="glow" style="width:400px;height:400px;background:var(--cyan);bottom:-100px;left:-100px;"></div>
+        <div class="section-hd ai">
+            <div class="label">Slide 10 — Kết Luận</div>
+            <h2>Tổng Kết & <span class="g">Bước Tiếp Theo</span></h2>
+        </div>
+        <div class="grid g3 ai" style="margin-bottom:20px;">
+            <div class="card cb"><div class="card-icon">🎯</div><div class="card-title">Mục tiêu Pilot</div><div class="card-desc">Chạy thực chiến 20 đơn hàng đầu tiên qua cả 3 kênh vận chuyển. Đánh giá thời gian xử lý, tỷ lệ lỗi, phản hồi SD.</div></div>
+            <div class="card cg"><div class="card-icon">📏</div><div class="card-title">Thước đo thành công</div><div class="card-desc">Tỷ lệ đơn hoàn tất ≥ 90%. Trung bình xử lý đơn &lt; 4h. Không có lỗi hệ thống nghiêm trọng. SD feedback tích cực.</div></div>
+            <div class="card cp"><div class="card-icon">🚀</div><div class="card-title">Sau Pilot</div><div class="card-desc">Tổng hợp báo cáo → Cải tiến SOP → Mở GĐ 2: Kết nối kho MD tỉnh, kích hoạt chấm điểm SLA, mở rộng SD toàn quốc.</div></div>
+        </div>
+        <div class="hbox ai">
+            <h4>📋 Đề xuất hành động ngay</h4>
+            <ul style="padding-left:18px;">
+                <li><strong>Kinh doanh:</strong> Gửi danh sách 20 SD + thông tin liên hệ trong tuần này</li>
+                <li><strong>IT:</strong> Test end-to-end toàn bộ luồng mua hàng trên staging</li>
+                <li><strong>Sale Admin:</strong> Training SOP 1→7 + test thao tác MISA với đơn giả lập</li>
+                <li><strong>Kế toán:</strong> Xác nhận quy trình đẩy BH MISA + template HĐ điện tử</li>
+                <li><strong>Kho:</strong> Kiểm kê tồn kho, đối chiếu MISA, chuẩn bị vật tư đóng gói</li>
+            </ul>
+        </div>
+        <div class="wbox ai">
+            <h4>⏰ Timeline đề xuất</h4>
+            <p><strong>Tuần 1:</strong> Chuẩn bị + Training nội bộ &nbsp;→&nbsp; <strong>Tuần 2:</strong> Mời SD đăng ký + Test thực &nbsp;→&nbsp; <strong>Tuần 3–4:</strong> Pilot chính thức 20 SD &nbsp;→&nbsp; <strong>Tuần 5:</strong> Tổng kết + Quyết định mở rộng GĐ 2</p>
+        </div>
+        <p class="ai" style="font-size:13px;color:var(--text3);margin-top:18px;text-align:center;">🙏 Cảm ơn các phòng ban. Hãy cùng phối hợp để Pilot thành công!</p>
+    </div>
+
+</div>
+
+<!-- ===== DOT NAV ===== -->
+<div class="dot-nav" id="dotNav"></div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<div class="nav-bar">
+    <button class="nav-btn" onclick="prevSlide()">← Trước</button>
+    <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+    <span class="slide-counter" id="counter">1 / 10</span>
+    <button class="nav-btn" onclick="nextSlide()">Tiếp →</button>
+</div>
+<div class="key-hint">Dùng <kbd>←</kbd><kbd>→</kbd> hoặc <kbd>Space</kbd> để chuyển slide</div>
+
+<script>
+    // Init Mermaid with dark theme
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+            darkMode: true,
+            primaryColor: '#1e293b',
+            primaryTextColor: '#f1f5f9',
+            primaryBorderColor: '#3b82f6',
+            lineColor: '#475569',
+            secondaryColor: '#0f172a',
+            tertiaryColor: '#1e293b',
+            edgeLabelBackground: '#1e293b',
+            clusterBkg: '#1e293b',
+            titleColor: '#f1f5f9',
+            nodeTextColor: '#f1f5f9',
+        },
+        flowchart: { curve: 'basis', padding: 20 }
+    });
+
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let cur = 0;
+
+    // Build dot nav
+    const dotNav = document.getElementById('dotNav');
+    for (let i = 0; i < total; i++) {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        d.onclick = () => go(i);
+        dotNav.appendChild(d);
+    }
+
+    function update() {
+        slides.forEach((s, i) => {
+            s.classList.remove('active', 'exit-left');
+            if (i === cur) s.classList.add('active');
+            else if (i < cur) s.classList.add('exit-left');
+        });
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+        document.getElementById('counter').textContent = `${cur + 1} / ${total}`;
+        document.getElementById('pFill').style.width = (cur / (total - 1) * 100) + '%';
+    }
+
+    function nextSlide() { if (cur < total - 1) { cur++; update(); } }
+    function prevSlide() { if (cur > 0) { cur--; update(); } }
+    function go(n) { cur = n; update(); }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+
+    let tx = 0;
+    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+    document.addEventListener('touchend', e => {
+        const d = tx - e.changedTouches[0].clientX;
+        if (Math.abs(d) > 50) d > 0 ? nextSlide() : prevSlide();
+    });
+
+    update();
+</script>
+
+</body>
+</html>
