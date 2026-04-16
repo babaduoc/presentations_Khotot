@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Họp Cập Nhật Tiến Độ & Đánh Giá Vận Hành — Web ETZ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --bg-card: rgba(17,24,39,0.75);
+            --blue: #3b82f6; --cyan: #06b6d4; --purple: #8b5cf6;
+            --green: #10b981; --orange: #f59e0b; --red: #ef4444; --pink: #ec4899;
+            --text: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
+            --border: rgba(148,163,184,0.1); --glass: rgba(255,255,255,0.04);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow:hidden; height:100vh; width:100vw; }
+
+        a { color: #60a5fa; text-decoration: none; border-bottom: 1px dashed rgba(96,165,250,0.5); transition: all 0.2s; }
+        a:hover { color: #93c5fd; border-bottom-style: solid; text-shadow: 0 0 10px rgba(96,165,250,0.5); }
+
+        /* ===== SLIDES ===== */
+        .slides-wrapper { width:100vw; height:100vh; position:relative; }
+        .slide {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            display:flex; flex-direction:column; justify-content:flex-start; align-items:center;
+            padding:30px 60px 80px; opacity:0; transform:translateX(60px);
+            transition:opacity .45s ease, transform .45s ease;
+            pointer-events:none; overflow-y:auto; overflow-x:hidden;
+        }
+        .slide.active { opacity:1; transform:translateX(0); pointer-events:all; }
+        .slide.exit-left { opacity:0; transform:translateX(-60px); }
+        
+        .slide-content-wrapper {
+            margin: auto 0;
+            width: 100%;
+            max-width: 1500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== NAV ===== */
+        .nav-bar {
+            position:fixed; bottom:0; left:0; right:0; height:52px;
+            background:rgba(10,14,26,.95); backdrop-filter:blur(20px);
+            border-top:1px solid var(--border);
+            display:flex; align-items:center; justify-content:space-between; padding:0 30px; z-index:100;
+        }
+        .progress-track { flex:1; height:4px; background:rgba(255,255,255,.07); border-radius:4px; margin:0 25px; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--cyan)); border-radius:4px; transition:width .4s ease; }
+        .nav-btn {
+            background:none; border:1px solid var(--border); color:var(--text2);
+            padding:8px 20px; border-radius:8px; cursor:pointer;
+            font-family:'Inter',sans-serif; font-size:16px; font-weight:600; transition:all .2s;
+        }
+        .nav-btn:hover { background:var(--glass); color:var(--text); border-color:var(--blue); }
+        .slide-counter { color:var(--text3); font-size:16px; font-weight:600; min-width:60px; text-align:center; }
+
+        /* ===== DOT NAV ===== */
+        .dot-nav { position:fixed; right:20px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:10px; z-index:100; }
+        .dot { width:12px; height:12px; border-radius:50%; background:rgba(255,255,255,.12); cursor:pointer; border:none; transition:all .3s; }
+        .dot.active { background:var(--cyan); box-shadow:0 0 12px rgba(6,182,212,.6); transform:scale(1.4); }
+
+        /* ===== TYPE ===== */
+        .label { font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--cyan); margin-bottom:16px; width:100%; text-align:center;}
+        h1 { font-size:clamp(40px,5vw,68px); font-weight:800; line-height:1.2; margin-bottom:16px; text-align:center; width:100%;}
+        h2 { font-size:clamp(30px,4vw,48px); font-weight:800; }
+        .g { background:linear-gradient(135deg,var(--blue),var(--cyan),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .section-hd { text-align:center; margin-bottom:34px; width:100%; z-index:5; }
+        .section-hd p { font-size:20px; color:var(--text2); margin-top:8px; }
+        .subtitle { font-size:24px; color:var(--text2); text-align:center; max-width:1000px; line-height:1.6; margin-bottom:40px; z-index:5; width:100%;}
+
+        /* ===== CARDS ===== */
+        .grid { display:grid; gap:24px; width:100%; z-index:5; position:relative; }
+        .g2 { grid-template-columns:1fr 1fr; }
+        .g3 { grid-template-columns:1fr 1fr 1fr; }
+        .card {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:30px;
+            position:relative; transition:all .3s ease;
+        }
+        .card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:16px 16px 0 0; }
+        .card:hover { border-color:rgba(148,163,184,.3); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,0,0,.4); }
+        .card-icon { font-size:36px; margin-bottom:14px; }
+        .card-title { font-size:26px; font-weight:700; margin-bottom:14px; color: white; display: flex; align-items: center; gap: 10px; }
+        .card-desc { font-size:18px; color:var(--text2); line-height:1.6; }
+        
+        .cb::before { background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+        .cg::before { background:linear-gradient(90deg,var(--green),#34d399); }
+        .co::before { background:linear-gradient(90deg,var(--orange),#fbbf24); }
+        .cp::before { background:linear-gradient(90deg,var(--purple),var(--pink)); }
+        .cr::before { background:linear-gradient(90deg,var(--red),#f97316); }
+        .c-blank { background:transparent; border: 2px dashed rgba(255,255,255,0.15); border-radius: 16px; min-height: 400px; display: flex; align-items: center; justify-content: center;}
+
+        /* ===== LISTS ===== */
+        .chk { list-style:none; padding:0; }
+        .chk li { 
+            position: relative;
+            padding-left: 42px;
+            font-size: 18px; 
+            color: var(--text2); 
+            line-height: 1.65; 
+            margin-bottom: 16px; 
+        }
+        .chk li::before { 
+            content: '✓'; 
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; 
+            background: rgba(16,185,129,.14); color: var(--green); 
+            border-radius: 6px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 16px; font-weight: 700; 
+        }
+        
+        .chk-red li::before { content:'⚠'; background:rgba(239,68,68,.14); color:var(--red); }
+        .chk-blue li::before { content:'⚡'; background:rgba(59,130,246,.14); color:var(--blue); }
+
+        /* ===== BOXES ===== */
+        .hbox, .wbox, .rbox { width:100%; margin-top:24px; border-radius:14px; padding:24px 34px; z-index:5; position:relative; }
+        .hbox { background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(6,182,212,.06)); border:1px solid rgba(59,130,246,.2); }
+        .wbox { background:rgba(245,158,11,.05); border:1px solid rgba(245,158,11,.2); }
+        .rbox { background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.2); }
+        
+        .hbox h4, .wbox h4, .rbox h4 { font-size:20px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+        .hbox h4 { color:var(--cyan); }
+        .wbox h4 { color:var(--orange); }
+        .rbox h4 { color:var(--red);  }
+        
+        .hbox p, .wbox p, .rbox p { font-size:18px; color:var(--text2); line-height:1.6; }
+
+        /* ===== GLOW ===== */
+        .glow { position:absolute; border-radius:50%; filter:blur(120px); opacity:.11; pointer-events:none; }
+
+        /* ===== ANIM ===== */
+        @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+        .slide.active .ai { animation:fadeUp .5s ease forwards; opacity:0; }
+        .slide.active .ai:nth-child(1){animation-delay:.1s}
+        .slide.active .ai:nth-child(2){animation-delay:.2s}
+        .slide.active .ai:nth-child(3){animation-delay:.3s}
+        .slide.active .ai:nth-child(4){animation-delay:.4s}
+        .slide.active .ai:nth-child(5){animation-delay:.5s}
+
+        .key-hint { position:fixed; bottom:65px; left:50%; transform:translateX(-50%); font-size:13px; color:var(--text3); opacity:.45; z-index:50; font-weight: 500; }
+        .key-hint kbd { display:inline-block; padding:3px 8px; border:1px solid rgba(255,255,255,.14); border-radius:4px; font-family:'Inter',sans-serif; font-size:12px; margin:0 3px; background:rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+<div class="slides-wrapper">
+
+    <!-- ============ SLIDE 0: COVER ============ -->
+    <div class="slide active">
+        <div class="glow" style="width:600px;height:600px;background:var(--blue);top:-200px;right:-100px;"></div>
+        <div class="glow" style="width:400px;height:400px;background:var(--purple);bottom:-100px;left:-50px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="label ai">REVIEW MEETING</div>
+            <h1 class="ai">Cập Nhật Tiến Độ &<br><span class="g">Đánh Giá Vận Hành Web ETZ</span></h1>
+            <p class="subtitle ai">Xác định các vấn đề còn tồn đọng, các SOP còn thiếu và đánh giá tính khả thi: <br><strong>"Dự án hiện tại có thể chạy được hay chưa?"</strong></p>
+        </div>
+    </div>
+    
+    <!-- ============ SLIDE 1: MENU ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--cyan);top:-100px;left:-200px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Agenda</div>
+                <h2>Nội Dung <span class="g">Cuộc Họp</span></h2>
+                <p>Khái quát các chủ đề sẽ đi qua trong phiên họp</p>
+            </div>
+            
+            <div class="grid g2 ai" style="max-width: 1050px;">
+                <div class="card cg" style="display:flex; flex-direction:row; align-items:center; gap: 24px; padding: 40px;">
+                    <div style="font-size: 4rem; color: var(--green); opacity: 0.8; font-weight: 800; min-width: 50px; text-align: center;">1</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom: 8px; font-size: 25px;">Cập Nhật Hiện Tại</div>
+                        <div class="card-desc">Cập nhật nhanh các tính năng, Data, Pháp lý & SOP đã hoàn thiện trên hệ thống.</div>
+                    </div>
+                </div>
+                <div class="card cr" style="display:flex; flex-direction:row; align-items:center; gap: 24px; padding: 40px;">
+                    <div style="font-size: 4rem; color: var(--red); opacity: 0.8; font-weight: 800; min-width: 50px; text-align: center;">2</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom: 8px; font-size: 25px;">Các Phần Tồn Đọng</div>
+                        <div class="card-desc">Tháo gỡ những đầu việc, nút thắt quan trọng đang bị thiếu hoặc trễ hẹn gỡ rối.</div>
+                    </div>
+                </div>
+                <div class="card co" style="display:flex; flex-direction:row; align-items:center; gap: 24px; padding: 40px;">
+                    <div style="font-size: 4rem; color: var(--orange); opacity: 0.8; font-weight: 800; min-width: 50px; text-align: center;">3</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom: 8px; font-size: 25px;">Thảo Luận & Chốt Bài Toán</div>
+                        <div class="card-desc">Quyết định hệ thống Xác thực, Phân bổ trách nhiệm nhân sự & Vấn đề rủi ro pháp lý BCT.</div>
+                    </div>
+                </div>
+                <div class="card cp" style="display:flex; flex-direction:row; align-items:center; gap: 24px; padding: 40px;">
+                    <div style="font-size: 4rem; color: var(--purple); opacity: 0.8; font-weight: 800; min-width: 50px; text-align: center;">4</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom: 8px; font-size: 25px;">Kết Luận Phiên Họp</div>
+                        <div class="card-desc">Nhận định chuyên gia (GO / NO-GO) và Ghi nhận biên bản đầu việc chính thức.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 2: HIỆN TẠI (TÍNH NĂNG & PHÁP LÝ) ============ -->
+    <div class="slide">
+        <div class="glow" style="width:500px;height:500px;background:var(--cyan);top:-150px;left:-100px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 1: Cập Nhật Hiện Tại</div>
+                <h2>Tình Hình Hiện Tại: <span class="g">Tính Năng / UX & Pháp Lý</span></h2>
+                <p>Các sửa đổi & tài nguyên hiện đang có trên Web ETZ</p>
+            </div>
+            <div class="grid g2 ai">
+                <div class="card cg">
+                    <div class="card-title"><span class="card-icon">✔️</span> Tài Khoản SD</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="margin-top:20px;">
+                            <li><strong>Ghi chú đăng ký:</strong> Thêm dòng nhắc nhở "Phải đăng ký bằng số điện thoại có Zalo".</li>
+                            <li><strong>Chỉnh sửa thông tin:</strong> Đã fix lỗi — Cho phép SD cập nhật lại thông tin cá nhân trên web để Admin kiểm duyệt lại.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card cb">
+                    <div class="card-title"><span class="card-icon">⚡</span> Cập Nhật Data Nhanh</div>
+                    <div class="card-desc">
+                        <ul class="chk-blue" style="margin-top:20px;">
+                            <li>Bổ sung <strong>Tool Excel (Import/Export)</strong> để hỗ trợ thao tác cập nhật nhanh Giá bán sản phẩm.</li>
+                            <li>Bổ sung <strong>Tool Excel</strong> cập nhật nhanh Số lượng tồn kho.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card cr">
+                    <div class="card-title"><span class="card-icon">🏛️</span> Tình Trạng Pháp Lý</div>
+                    <div class="card-desc">
+                        <ul class="chk-red">
+                            <li><strong style="color:white;">Bộ Công Thương hồ sơ vẫn chưa duyệt xong.</strong><br> (Pháp chế đang chờ cổng thông tin xử lý).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card cp">
+                    <div class="card-title"><span class="card-icon">🎨</span> Truyền Thông MKT</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="margin-top:20px;">
+                            <li>Các thiết kế hình ảnh, banner đã được đẩy lên Web nội bộ đầy đủ.</li>
+                            <li>Hình ảnh và bài viết pr để <strong>kêu gọi 20 SD test website</strong> đã chuẩn bị xong, sẵn sàng bắn đi.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============ SLIDE 3: HIỆN TẠI (QUY TRÌNH SOP ĐÃ CÓ) ============ -->
+    <div class="slide">
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 1: Cập Nhật Hiện Tại</div>
+                <h2>Tình Hình Hiện Tại: <span class="g">Các SOP Đã Hệ Thống</span></h2>
+                <p>Các tài liệu vận hành cốt lõi đã được số hoá (Xem chi tiết trên hệ thống Brain)</p>
+            </div>
+            <div class="grid g2 ai">
+                <div class="card cp">
+                    <div class="card-title"><span class="card-icon">📦</span> Xử lý đơn hàng đa phòng ban</div>
+                    <div class="card-desc" style="margin-bottom: 24px;">
+                        Phối hợp nhịp nhàng giữa Sale Admin / Kế Toán / Kho để đưa sản phẩm thành công tới tay khách hàng SD. Đã lên bản SOP rút gọn dễ hiểu nhất.
+                    </div>
+                    <a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-2-xu-ly-don-hang-chuan/" target="_blank" style="font-size: 18px; font-weight: 500;">🔗 Chuyển đến Wiki SOP 2</a>
+                </div>
+                <div class="card cb">
+                    <div class="card-title"><span class="card-icon">⚙️</span> Các quy trình cốt lõi khác</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="margin-top: 15px;">
+                            <li><a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-1-quy-trinh-dang-ky-xac-thuc-sd/" target="_blank">SOP 1</a> & <a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-1-1-quy-trinh-duyet-tai-khoan-sd/" target="_blank">SOP 1.1</a>: Quy trình Đăng ký & Xét Duyệt SD.</li>
+                            <li><a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-6-huy-don-hang/" target="_blank">SOP 6</a>: Hủy đơn hàng trong trường hợp khách đã thanh toán.</li>
+                            <li><a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-3-huy-don-het-hang/" target="_blank">SOP 3</a>: Xử lý hủy đơn do hệ thống rớt kho / hết hàng bất ngờ.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 4: CÁC PHẦN CÒN THIẾU ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--red);top:-100px;left:-100px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 2: Các Tồn Đọng Ought To Fix</div>
+                <h2>Các Phần <span class="g">Còn Thiếu Cần Nỗ Lực</span></h2>
+                <p>Những điểm vướng mắc quy mô lớn cần đốc thúc theo dõi thật sát</p>
+            </div>
+            <div class="grid g2 ai">
+                <div class="card cg">
+                    <div class="card-title"><span class="card-icon">🏷️</span> 1. Gian Hàng Thanh Lý</div>
+                    <div class="card-desc">
+                        Tuy gian hàng đã được dựng lên rồi, hiện đang cập nhật sản phẩm nhưng <strong>chưa đầy đủ</strong>. Dù có Excel hỗ trợ nhưng đẩy SP lên vẫn tốn kha khá thời gian biên tập.
+                    </div>
+                </div>
+                <div class="card cp">
+                    <div class="card-title"><span class="card-icon">🧮</span> 2. Data Giá & Tồn Kho Thực Tế</div>
+                    <div class="card-desc">
+                        Cập nhật chốt danh sách Giá sản phẩm và Số lượng thực tế mới nhất, <strong>cần tính toán đối soát kỹ</strong> để đảm bảo trải nghiệm: "Khách đặt hàng là hệ thống phải có hàng xuất thật".
+                    </div>
+                </div>
+                <div class="card co">
+                    <div class="card-title"><span class="card-icon">🤝</span> 3. Hợp đồng Đối Tác VC</div>
+                    <div class="card-desc">
+                        Hợp đồng đối tác vận chuyển đang được tiến hành, hiện tại đang chờ bên <strong>Viettel Post gửi lại kết quả và chốt hồ sơ</strong> để đấu nối thông suốt.
+                    </div>
+                </div>
+                <div class="card cb">
+                    <div class="card-title"><span class="card-icon">🧑‍🤝‍🧑</span> 4. Nhân Sự</div>
+                    <div class="card-desc">
+                        Sắp xếp nhân sự làm thực chiến phụ trách chốt đơn — Hiện tại vẫn đang là bài toán mở giữa các phòng ban. Ai sẽ điều khiển trung tâm?
+                    </div>
+                </div>
+                <div class="card cr" style="grid-column: span 2;">
+                    <div class="card-title"><span class="card-icon">🐛</span> 5. Lỗi Hệ Thống (Phía Dev)</div>
+                    <div class="card-desc">
+                        Về phía đội ngũ IT kỹ thuật phần mềm: <strong>Các tính năng thiết kế mới cập nhật vẫn còn tồn tại bug.</strong> Cần cho DEV có thời gian dọn dẹp sạch lỗi trước khi go-live mượt mà.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 5: CẦN CHỐT (TÀI KHOẢN) ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--orange);top:-150px;right:-100px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 3: Thảo Luận & Quyết Định</div>
+                <h2>Các Vấn Đề Cần Chốt: <span class="g">Xác Thực SD</span></h2>
+                <p>Tiêu chí khóa/mở quyền hệ thống cho khách truy cập lần đầu</p>
+            </div>
+            
+            <div class="card co ai" style="margin-bottom:24px; width:100%;">
+                <div class="card-title"><span class="card-icon">⚖️</span> 1. Luồng Xác Thực (Phải Chốt 1 Trong 2) <a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-1-quy-trinh-dang-ky-xac-thuc-sd/" target="_blank" style="margin-left: auto; font-size: 16px; font-weight: 500;">🔗 Link SOP 1</a></div>
+                <div class="grid g2" style="margin-top: 20px;">
+                    <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 30px;">
+                        <strong style="color: white; font-size:20px;">Option A: Chặn từ đầu</strong><br><br>
+                        <span style="color: var(--text2);">SD bắt buộc phải cung cấp giấy tờ định danh và hoàn thiện. Admin duyệt thì <strong>mới được mua hàng</strong>.</span>
+                    </div>
+                    <div style="padding-left: 10px;">
+                        <strong style="color: white; font-size:20px;">Option B: Trải nghiệm thoải mái</strong><br><br>
+                        <span style="color: var(--text2);">Cho SD tạo tài khoản và tự do mua hàng/dạo quanh trải nghiệm trước mà chưa cần gắt gao giấy tờ.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rbox ai" style="margin-top: 0; margin-bottom: 24px;">
+                <h4 style="font-size: 20px;">⚠️ Rủi ro phát sinh từ Option B (Mở cửa tự do):</h4>
+                <p>Dù theo luồng mở, hệ thống / Sale Admin vẫn bắt buộc phải có bước gọi điện thoại xin thông tin để xuất hóa đơn — <strong>nguyên tắc Dù khách báo Không Cần Lấy Hóa Đơn vẫn phải xuất. Nên kiểu gì cũng phải đòi giấy tờ.</strong></p>
+            </div>
+
+            <div class="card cb ai" style="width:100%;">
+                <div class="card-title"><span class="card-icon">📑</span> 2. Tiêu chí duyệt Tài khoản SD của Admin <a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-1-1-quy-trinh-duyet-tai-khoan-sd/" target="_blank" style="margin-left: auto; font-size: 16px; font-weight: 500;">🔗 Link SOP 1.1</a></div>
+                <div class="card-desc">
+                    <ul class="chk-blue" style="margin-top: 15px;">
+                        <li><strong>Standard:</strong> Có CCCD + Giấy phép Kinh Doanh (GPKD) — <strong>Bắt buộc khớp thông tin nha</strong>.</li>
+                        <li><strong>Premium (DSS Club):</strong> Có CCCD + Tài khoản DSS Club mở từ năm 2023, đã quét ≥ 200 mã Serial, và lần quét gần nhất cách đây ≤ 6 tháng.</li>
+                    </ul>
+                    <div style="margin-top: 20px; color: var(--orange); font-style: italic; font-weight: 600;">
+                        *Câu hỏi chốt: Các chuẩn mực này có áp dụng y đúc (không nhân nhượng) cho cả tệp 20 Sub-Dealer chạy Demo Pilot sắp tới hay không?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 6: CẦN CHỐT (VẬN HÀNH) ============ -->
+    <div class="slide">
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 3: Thảo Luận & Quyết Định</div>
+                <h2>Các Vấn Đề Cần Chốt: <span class="g">Vận Hành Thực Tiễn</span></h2>
+                <p>Vai trò giao tiếp liên phòng ban và ngưỡng điều phối phương thức giao hàng chuẩn</p>
+            </div>
+
+            <div class="grid g2 ai">
+                <div class="card cg" style="grid-column: span 2;">
+                    <div class="card-title"><span class="card-icon">👩‍💻</span> Quy Trách Nhiệm Phối Hợp Các Bộ Phận</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="margin-top: 20px;">
+                            <li><strong>Khâu Kế Toán:</strong> Cần xác nhận bộ phận Kế toán: Đầu mối làm việc chính là ai? Người này sẽ chuyên kiểm tra dòng tiền vào có khớp tài khoản không. Sau đó đẩy lệnh rớt đơn này xuống Kho và phải <strong>lập phiếu XUẤT hóa đơn theo quy trình</strong>.</li>
+                            <li><strong>Khâu Sale Admin:</strong> Team vận hành thống nhất sẽ cử ra <strong>1 bạn Sale duy nhất</strong> thao tác hệ thống: Tạo đơn giùm lúc cần và Xử lý đơn hàng luồng chuẩn.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card co">
+                    <div class="card-title"><span class="card-icon">📦</span> Giao Nhận Của Kho (C. Thúy)</div>
+                    <div class="card-desc">
+                        <ul class="chk-blue" style="margin-top: 15px; margin-bottom: 20px;">
+                            <li><strong>Tránh máy móc:</strong> Kho hạn chế làm Web. Chị Thuý Kho sẽ chốt tình trạng qua Zalo — Sale Admin thao tác phần mềm thay.</li>
+                            <li><strong>Time-frame Logistic:</strong> Thời gian nào trong ngày gọi Đối tác vận chuyển đến nhận bao là hợp lý nhất?</li>
+                            <li><strong>Cut-off time:</strong> Chốt mốc giờ cố định: <strong>Sau mấy giờ thì Kho từ chối KHÔNG nhận thêm đơn nhồi xuống từ Admin nữa?</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card cp">
+                    <div class="card-title"><span class="card-icon">🚚</span> Tuyến Chành Xe (SOP 2) <a href="https://brain.kholink.vn/01-tong-quan-ly-du-an/2-phong-van-hanh/sop-2-xu-ly-don-hang-chuan/" target="_blank" style="margin-left: auto; font-size: 16px; font-weight: 500;">🔗 Link SOP 2</a></div>
+                    <div class="card-desc">
+                        <p style="margin-bottom: 20px;">Thống nhất quy định giá trị gửi kiện đóng qua đối tác Chành xe ngoài Viettel Post:</p>
+                        <div style="font-size: 34px; font-weight: 800; color: white;">≥ 5.000.000 VNĐ / Đơn?</div>
+                        <p style="margin-top: 20px;">Dưới mức tài chính này tự động điều chuyển về luồng đóng Viettel Post theo tiêu chuẩn?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 7: CẦN CHỐT (BỘ CÔNG THƯƠNG) ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--red);top:-150px;right:-100px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label">Phần 3: Thảo Luận & Quyết Định</div>
+                <h2>Các Vấn Đề Cần Chốt: <span class="g">Chính Sách BCT Lệnh Cấm</span></h2>
+                <p>Khai thông sự bế tắc khi giấy phép Bộ Công Thương chưa được xét duyệt</p>
+            </div>
+            
+            <div class="card rbox ai" style="margin-bottom:24px; width:100%;">
+                <div class="card-title"><span class="card-icon">🏛️</span> Tiến Độ Thủ Tục Pháp Lý Bị Treo</div>
+                <div class="card-desc">
+                    <ul class="chk-red" style="margin-top: 20px;">
+                        <li><strong>Vấn đề Dịch vụ ngoài:</strong> Thời gian nộp và duyệt trên cổng quá lâu. Vậy công ty có nên cân nhắc <strong>thuê ngoài (dịch vụ cò lo lót)</strong> để chạy giấy hành chính này cho nhanh hơn không? Tiết kiệm chi phí thời gian vận hành.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card cb ai" style="width:100%;">
+                <div class="card-title"><span class="card-icon">🛡️</span> Phương Án Kháng Cáo (Rủi Ro Thanh Tra Giữa Chừng)</div>
+                <div class="card-desc">
+                    <p style="margin-top: 15px; margin-bottom: 15px;">
+                        <em>Giả định:</em> Nếu hiện tại ta đánh liều đưa hệ thống vào thử nghiệm với 20 người này → Chắc chắn sẽ có phát sinh GIAO DỊCH THẬT. Mà Bộ Công Thương thì chưa cấp phép.
+                    </p>
+                    <ul class="chk-blue" style="margin-top: 15px;">
+                        <li>Lỡ Bộ Công Thương quét trúng và phát hiện mình có giao dịch thanh toán. Liệu ta có cần lập ra một <strong>Tờ trình Test Nội Bộ hệ thống TMĐT</strong> trước không?</li>
+                        <li>Tờ trình này sẽ được đóng dấu lưu hành nội bộ sếp duyệt — Như một lá bùa nếu Bộ Công Thương tra khảo thì có một văn kiện giấy đen mực trắng chống chế: <strong>"ĐÂY CHỈ LÀ GIAO DỊCH TEST HỆ THỐNG MÔ PHỎNG NỘI BỘ, KHÔNG PHẢI BUÔN BÁN PUBLIC."</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 8: LỜI KHUYÊN AI ============ -->
+    <div class="slide">
+        <div class="glow" style="width:800px;height:800px;background:var(--blue);top:-250px;left:-250px;"></div>
+        <div class="slide-content-wrapper">
+            <div class="section-hd ai">
+                <div class="label" style="color: var(--pink);">AI Consultant Point Of View</div>
+                <h2>Lời Khuyên Từ Chuyên Gia: <span class="g">Có Chạy Được Không?</span></h2>
+                <p>Đánh giá khách quan, không né tránh sự thật từ hiện trạng</p>
+            </div>
+
+            <div class="hbox ai" style="text-align: center; border-radius: 20px; padding: 40px; margin-bottom: 30px;">
+                <h3 style="font-size: 28px; color: white; margin-bottom: 20px;">Quan Điểm Của Tôi LÀ: <span style="background: var(--orange); color: black; padding: 5px 15px; border-radius: 8px;">PUBLIC: KHÔNG, DEMO KÍN: CÓ</span></h3>
+                <p style="font-size: 19px; max-width: 1000px; margin: 0 auto;">Dự án <strong>chưa đủ an toàn</strong> để ra mắt trên diện rộng, nhưng lại ở <strong>đúng điểm mốc lý tưởng</strong> để đưa vào Pilot với 20 khách hàng "ruột".</p>
+            </div>
+
+            <div class="grid g2 ai">
+                <div class="card cr">
+                    <div class="card-title">❌ Chưa Thể Launch Toàn Diện (NO-GO)</div>
+                    <div class="card-desc">
+                        <ul class="chk-red" style="margin-top: 20px;">
+                            <li>Hợp đồng Viettel Post là xương sống hệ thống nhưng chưa nối xong API, nguy cơ sập luồng đơn cực mạnh.</li>
+                            <li>Kỹ sư (DEV) báo vẫn còn bug — Nếu ra mắt đại chúng, Sale Admin sẽ đuối sức khi phải vừa chạy chữa vừa xử lý đơn khối lượng lớn.</li>
+                            <li>BCT chưa cấp phép, risk thu hồi rất cay đắng. Data tồn kho thực chiến chưa có thuật toán backup cẩn thận.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card cg">
+                    <div class="card-title">✅ Pilot 20 Người (Rất Tốt)</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="margin-top: 20px;">
+                            <li>SOP đã có rồi! Nếu không "ném" dự án vào làm thật với 20 người này, Kế toán & Sale Admin sẽ mông lung vì học vẹt lý thuyết mãi.</li>
+                            <li>Thử bằng luồng kín với <strong>Tờ trình Test Nội bộ</strong> được đóng dấu, giúp qua mặt BCT hoàn toàn hợp pháp.</li>
+                            <li>Chính sách cắt giao hàng cho Chành xe chỉ hoàn thiện được khi bắt đầu có độ trễ do con người (chị Thúy Kho) phát sinh.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 9: KẾT LUẬN ============ -->
+    <div class="slide">
+        <div class="glow" style="width:600px;height:600px;background:var(--purple);top:-200px;right:-150px;"></div>
+        <div class="glow" style="width:400px;height:400px;background:var(--cyan);bottom:-100px;left:-100px;"></div>
+        <div class="slide-content-wrapper" style="height: 100%; justify-content: center;">
+            <div class="section-hd ai" style="margin-bottom: 50px; margin-top: -100px;">
+                <div class="label" style="font-size: 20px;">Decision Time</div>
+            </div>
+            <div class="ai" style="text-align: center; margin-bottom: 40px; z-index: 10;">
+                <h1 style="font-size: clamp(80px, 10vw, 130px); margin-bottom: 40px;">GO / NO-GO?</h1>
+                <p style="font-size: 30px; color: #e2e8f0; line-height: 1.6;">Tổng hợp <strong>Hiện Trạng</strong>, <strong>Pháp Lý</strong> và các khâu phối hợp nội bộ,</p>
+                <p style="font-size: 36px; color: white; font-weight: 700; margin-top: 25px;">Sếp ơi, Pilot cất cánh được chưa?</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SLIDE 10: TỔNG KẾT BIÊN BẢN HỌP ============ -->
+    <div class="slide">
+        <div class="glow" style="width:700px;height:700px;background:var(--blue);bottom:-250px;right:-250px;"></div>
+        <div class="slide-content-wrapper" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start;">
+            <div class="section-hd ai" style="margin-bottom: 20px;">
+                <div class="label">Post-Meeting Recap</div>
+                <h2>Biên Bản & <span class="g">Chốt Đầu Việc</span></h2>
+                <p>Tổng hợp các quyết định cuối cùng từ cuộc họp Pilot Web ETZ</p>
+            </div>
+
+            <div class="grid g2 ai" style="width: 100%; gap: 20px;">
+                <!-- Column 1 -->
+                <div class="card cg" style="padding: 24px;">
+                    <div class="card-title" style="font-size: 22px; color: var(--green);"><span class="card-icon" style="font-size:24px; margin-right:8px; margin-bottom:0;">🎯</span> 1. Chính sách & Pháp lý</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="font-size: 16px; margin-top: 15px;">
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Xác thực SD:</strong> Chốt chặn ngay từ đầu. Web chạy thử 20 ng, không chạy theo số lượng.</li>
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Tiêu chí duyệt:</strong> Chốt quét 200 điểm Serial.</li>
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Pháp lý BCT:</strong> Đồng ý làm <em>Tờ trình Test Nội Bộ</em>. Dò giá xem dịch vụ thuê nộp BCT.</li>
+                            <li style="font-size: 16px; margin-bottom: 0;"><strong>Lịch trình CHỐT:</strong> Start nhóm TEST hệ thống vào <strong>ngày mai (mùng 15)</strong>. Tạo ngay Group chung các bộ phận.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="card cp" style="padding: 24px;">
+                    <div class="card-title" style="font-size: 22px; color: var(--purple);"><span class="card-icon" style="font-size:24px; margin-right:8px; margin-bottom:0;">🚚</span> 2. Lưu đồ Giao Nhận</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="font-size: 16px; margin-top: 15px;">
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Chành xe:</strong> KHÔNG GIỚI HẠN tối thiểu. KhoTot chịu phí. Đủ chành M.Đông & M.Tây.</li>
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Kho C.Thuý:</strong> Đóng kiện quay Camera chuẩn. (Đề xuất thêm 1 admin Kho + VP).</li>
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Cut-off:</strong> Sau 16:00 Admin ngưng đẩy đơn xuống. Khách vẫn tạo trên Web bt.</li>
+                            <li style="font-size: 16px; margin-bottom: 0;">Khách lấy qua KH/ViettelPost xử lý bt (Ký thêm Giao Tận Tay). Đơn 5tr Đổi/Trả có khung xử lý 2 ngày -> Tối đa 3 ngày Close.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="card co" style="padding: 24px;">
+                    <div class="card-title" style="font-size: 22px; color: var(--orange);"><span class="card-icon" style="font-size:24px; margin-right:8px; margin-bottom:0;">👥</span> 3. Nhân sự & Tầm nhìn MKT</div>
+                    <div class="card-desc">
+                        <ul class="chk" style="font-size: 16px; margin-top: 15px;">
+                            <li style="font-size: 16px; margin-bottom: 10px;"><strong>Nhân sự chốt:</strong> Kế toán (C. Quyên), Kho (C. Thuý), Xử lý luồng đơn (Sale Admin).</li>
+                            <li style="font-size: 16px; margin-bottom: 10px;">Đội Sale Admin/MKT cần cơ chế kiêm nhiệm & lương phụ cấp riêng minh bạch.</li>
+                            <li style="font-size: 16px; margin-bottom: 0;"><strong>Tầm nhìn MKT (a.Tiền):</strong> Muốn MKT tiếp cận sâu kéo phễu. Đẩy hệ thống thành Cty Cổ phần TMĐT độc lập khỏi DSS - Cạnh tranh trực diện Lý Gia.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Column 4 -->
+                <div class="card cr" style="padding: 24px;">
+                    <div class="card-title" style="font-size: 22px; color: var(--red);"><span class="card-icon" style="font-size:24px; margin-right:8px; margin-bottom:0;">⚠️</span> 4. Vấn đề Tồn đọng (Sớm đóng)</div>
+                    <div class="card-desc">
+                        <ul class="chk-red" style="font-size: 16px; margin-top: 15px;">
+                            <li style="font-size: 16px; margin-bottom: 10px;">Trình trạng website thực tế vẫn còn Lỗi, chưa tối ưu 100%. (Team Dev phải dọn khẩn cấp).</li>
+                            <li style="font-size: 16px; margin-bottom: 0;"><strong>Gian hàng thanh lý:</strong> Đã cập nhật xong 40 SP. NV thao tác đẩy nốt ~50 SP còn lại trong file Excel lên cho đủ đội hình khánh thành kịp ngày mai.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== DOT NAV ===== -->
+<div class="dot-nav" id="dotNav"></div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<div class="nav-bar">
+    <button class="nav-btn" onclick="prevSlide()">← Trước</button>
+    <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+    <span class="slide-counter" id="counter">1 / 11</span>
+    <button class="nav-btn" onclick="nextSlide()">Tiếp →</button>
+</div>
+<div class="key-hint">Dùng <kbd>←</kbd> <kbd>→</kbd> <kbd>Tab</kbd> hoặc <kbd>Space</kbd> để qua slide</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let cur = 0;
+
+    const dotNav = document.getElementById('dotNav');
+    for (let i = 0; i < total; i++) {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        d.onclick = () => go(i);
+        dotNav.appendChild(d);
+    }
+
+    function update() {
+        slides.forEach((s, i) => {
+            s.classList.remove('active', 'exit-left');
+            if (i === cur) {
+                s.classList.add('active');
+                s.scrollTop = 0; // reset scroll inside slide
+            }
+            else if (i < cur) s.classList.add('exit-left');
+        });
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+        document.getElementById('counter').textContent = `${cur + 1} / ${total}`;
+        document.getElementById('pFill').style.width = (cur / (total - 1) * 100) + '%';
+    }
+
+    function nextSlide() { if (cur < total - 1) { cur++; update(); } }
+    function prevSlide() { if (cur > 0) { cur--; update(); } }
+    function go(n) { cur = n; update(); }
+
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+        }
+    });
+
+    let tx = 0, ty = 0;
+    document.addEventListener('touchstart', e => { 
+        tx = e.touches[0].clientX; 
+        ty = e.touches[0].clientY;
+    });
+    document.addEventListener('touchend', e => {
+        const dx = tx - e.changedTouches[0].clientX;
+        const dy = ty - e.changedTouches[0].clientY;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) dx > 0 ? nextSlide() : prevSlide();
+    });
+
+    update();
+</script>
+
+</body>
+</html>
