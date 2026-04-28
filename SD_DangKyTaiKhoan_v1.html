@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khotot.vn · Đăng Ký Đại Lý SD — Cần GPKD và SĐT App DSS để duyệt nhanh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --teal: #00b8b8;
+      --teal2: #00d4d4;
+      --teal-light: #e0f7f7;
+      --dark: #0a1a1a;
+      --dark2: #112222;
+      --text: #1a2a2a;
+      --muted: #5a7070;
+      --bg: #f5fafa;
+      --white: #fff;
+      --danger: #e53935;
+      --danger-light: #fdecea;
+      --warn: #f57c00;
+      --warn-light: #fff3e0;
+      --success: #2e7d32;
+      --success-light: #e8f5e9;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --radius-pill: 999px;
+      --shadow: 0 4px 24px rgba(0, 184, 184, .12);
+      --shadow-lg: 0 12px 48px rgba(0, 184, 184, .18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1.5px solid rgba(0, 184, 184, .12);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0, 184, 184, .08)
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none
+    }
+
+    .nav-logomark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--teal), var(--teal2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--teal);
+    }
+
+    .nav-brand span {
+      color: var(--text)
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 4px
+    }
+
+    .nav-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      transition: all .2s;
+      white-space: nowrap
+    }
+
+    .nav-pill:hover {
+      background: var(--teal-light);
+      color: var(--teal)
+    }
+
+    .nav-pill.active {
+      background: var(--teal);
+      color: #fff
+    }
+
+    .nav-cta {
+      background: var(--teal);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 9px 22px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(0, 184, 184, .35);
+      transition: all .2s
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 184, 184, .45)
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #0d2424 55%, var(--dark2) 100%);
+      padding: 80px 48px 72px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 184, 184, .12), transparent 70%);
+      top: -200px;
+      right: -150px;
+      pointer-events: none
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 212, .07), transparent 70%);
+      bottom: -150px;
+      left: 10%;
+      pointer-events: none
+    }
+
+    .hero-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 184, 184, .15);
+      border: 1.5px solid rgba(0, 184, 184, .3);
+      border-radius: var(--radius-pill);
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--teal2);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px
+    }
+
+    .htag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal2);
+      animation: pulse 1.5s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .3;
+        transform: scale(.7)
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 4.5vw, 54px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 18px
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal2)
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255, 255, 255, .62);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      max-width: 460px
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .hero-chip {
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: var(--radius-pill);
+      padding: 5px 14px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .8);
+      font-weight: 700
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .h-stat {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: var(--radius);
+      padding: 20px;
+      backdrop-filter: blur(8px)
+    }
+
+    .h-stat-num {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--teal2);
+      line-height: 1
+    }
+
+    .h-stat-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .55);
+      margin-top: 5px;
+      line-height: 1.4
+    }
+
+    .h-wide {
+      grid-column: 1/-1;
+      background: rgba(0, 184, 184, .1);
+      border: 1.5px solid rgba(0, 184, 184, .25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px
+    }
+
+    .h-wide-icon {
+      font-size: 28px
+    }
+
+    .h-wide-text strong {
+      color: var(--teal2);
+      font-size: 14px;
+      display: block;
+      margin-bottom: 3px
+    }
+
+    .h-wide-text {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, .7);
+      line-height: 1.5
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 32px
+    }
+
+    .section {
+      padding: 72px 0
+    }
+
+    .section-white {
+      background: #fff
+    }
+
+    .s-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-light);
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: var(--radius-pill);
+      padding: 5px 14px;
+      margin-bottom: 14px
+    }
+
+    .s-title {
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 900;
+      letter-spacing: -.5px;
+      margin-bottom: 10px
+    }
+
+    .s-title em {
+      font-style: normal;
+      color: var(--teal)
+    }
+
+    .s-lead {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 36px
+    }
+
+    .mat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px
+    }
+
+    .mat-card {
+      background: #fff;
+      border: 1.5px solid rgba(0, 184, 184, .12);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all .25s
+    }
+
+    .mat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--teal)
+    }
+
+    .mat-photo {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      background: linear-gradient(135deg, var(--teal-light), #f7fafa)
+    }
+
+    .mat-body {
+      padding: 22px
+    }
+
+    .mat-name {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 6px
+    }
+
+    .mat-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px
+    }
+
+    .mat-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      letter-spacing: .3px
+    }
+
+    .mb-must {
+      background: var(--danger-light);
+      color: var(--danger)
+    }
+
+    .mb-rec {
+      background: var(--teal-light);
+      color: var(--teal)
+    }
+
+    /* CCCD mockup */
+    .id-mock-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px
+    }
+
+    .id-mock {
+      aspect-ratio: 1.6/1;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 2px solid
+    }
+
+    .id-good {
+      background: linear-gradient(135deg, #fff8e1, #fff3e0);
+      border-color: #ffa726;
+      color: #4e342e
+    }
+
+    .id-bad {
+      background: linear-gradient(135deg, #ffebee, #ffcdd2);
+      border-color: #e53935;
+      color: #b71c1c;
+      filter: blur(.4px)
+    }
+
+    .id-mock h4 {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: #c62828
+    }
+
+    .id-mock-row {
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 4px
+    }
+
+    .id-mock-num {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 6px 0;
+      color: #e65100
+    }
+
+    .id-bad .id-mock-num {
+      color: #b71c1c;
+      opacity: .5;
+      text-shadow: 0 0 4px rgba(0, 0, 0, .3)
+    }
+
+    .id-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 22px
+    }
+
+    .id-photo-area {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 60px;
+      height: 75px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px
+    }
+
+    .step-card {
+      background: #fff;
+      border: 1.5px solid rgba(0, 184, 184, .12);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all .2s;
+      position: relative
+    }
+
+    .step-card:hover {
+      box-shadow: var(--shadow);
+      border-color: var(--teal);
+      transform: translateY(-3px)
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--teal2));
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(0, 184, 184, .4)
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 900;
+      margin-bottom: 8px
+    }
+
+    .step-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-size: 9.5px;
+      font-weight: 800;
+      border-radius: var(--radius-pill);
+      padding: 3px 9px;
+      margin-top: 10px;
+      background: var(--teal-light);
+      color: var(--teal)
+    }
+
+    /* Two-path comparison */
+    .path-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px
+    }
+
+    .path-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid;
+      position: relative
+    }
+
+    .path-fast {
+      border-color: var(--success)
+    }
+
+    .path-alt {
+      border-color: #f9a825
+    }
+
+    .path-badge {
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      padding: 5px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase
+    }
+
+    .pb-fast {
+      background: var(--success);
+      color: #fff
+    }
+
+    .pb-alt {
+      background: #f9a825;
+      color: #fff
+    }
+
+    .path-icon {
+      font-size: 42px;
+      margin-bottom: 8px
+    }
+
+    .path-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 6px
+    }
+
+    .path-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.5
+    }
+
+    .path-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px
+    }
+
+    .path-list li {
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start
+    }
+
+    .path-list li span {
+      color: var(--success);
+      font-weight: 900;
+      flex-shrink: 0
+    }
+
+    .path-alt .path-list li span {
+      color: #f9a825
+    }
+
+    .path-result {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.5
+    }
+
+    .pr-fast {
+      background: var(--success-light);
+      color: var(--success)
+    }
+
+    .pr-alt {
+      background: #fff8e1;
+      color: #ef6c00
+    }
+
+    .dodont-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    .do-card {
+      background: var(--success-light);
+      border: 1.5px solid rgba(46, 125, 50, .2);
+      border-radius: var(--radius);
+      padding: 28px
+    }
+
+    .dont-card {
+      background: var(--danger-light);
+      border: 1.5px solid rgba(229, 57, 53, .2);
+      border-radius: var(--radius);
+      padding: 28px
+    }
+
+    .dd-title {
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .dt-do {
+      color: var(--success)
+    }
+
+    .dt-dont {
+      color: var(--danger)
+    }
+
+    .dd-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .dd-list li {
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start
+    }
+
+    .db-do {
+      color: var(--success);
+      font-weight: 900;
+      flex-shrink: 0;
+      font-size: 16px
+    }
+
+    .db-dont {
+      color: var(--danger);
+      font-weight: 900;
+      flex-shrink: 0;
+      font-size: 16px
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .cl-item {
+      background: #fff;
+      border: 1.5px solid rgba(0, 184, 184, .15);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: all .2s
+    }
+
+    .cl-item:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow);
+      transform: translateX(4px)
+    }
+
+    .cl-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--teal-light);
+      border: 2px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 14px;
+      color: var(--teal);
+      font-weight: 900
+    }
+
+    .cl-text {
+      font-size: 13.5px;
+      line-height: 1.55
+    }
+
+    .cl-text strong {
+      font-weight: 900;
+      color: var(--text)
+    }
+
+    .penalty-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px
+    }
+
+    .penalty-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      border-top: 4px solid var(--warn);
+      box-shadow: var(--shadow)
+    }
+
+    .pc-icon {
+      font-size: 36px;
+      margin-bottom: 12px
+    }
+
+    .pc-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: var(--warn);
+      margin-bottom: 8px
+    }
+
+    .pc-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6
+    }
+
+    .info-box {
+      background: var(--teal-light);
+      border: 1.5px solid rgba(0, 184, 184, .25);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      font-size: 13.5px;
+      color: #005f5f;
+      line-height: 1.7;
+      margin-top: 20px;
+      display: flex;
+      gap: 12px
+    }
+
+    .info-box strong {
+      font-weight: 900;
+      color: var(--teal)
+    }
+
+    .warn-box {
+      background: var(--warn-light);
+      border: 1.5px solid rgba(245, 124, 0, .25);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      font-size: 13.5px;
+      color: #7a3e00;
+      line-height: 1.7;
+      margin-top: 20px;
+      display: flex;
+      gap: 12px
+    }
+
+    .warn-box strong {
+      font-weight: 900;
+      color: var(--warn)
+    }
+
+    .footer {
+      background: var(--dark);
+      padding: 48px;
+      text-align: center
+    }
+
+    .footer-logo {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--teal2);
+      margin-bottom: 8px
+    }
+
+    .footer-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .4);
+      line-height: 1.8
+    }
+
+    @media(max-width:768px) {
+
+      .hero-inner,
+      .dodont-wrap,
+      .path-wrap,
+      .id-mock-wrap {
+        grid-template-columns: 1fr
+      }
+
+      .mat-grid {
+        grid-template-columns: 1fr
+      }
+
+      .steps-grid,
+      .penalty-grid {
+        grid-template-columns: 1fr
+      }
+
+      .nav {
+        padding: 0 16px
+      }
+
+      .nav-pills {
+        display: none
+      }
+
+      .hero {
+        padding: 48px 20px
+      }
+
+      .container {
+        padding: 0 20px
+      }
+
+      .section {
+        padding: 48px 0
+      }
+    }
+
+    @media print {
+      .nav {
+        display: none
+      }
+
+      body {
+        background: #fff
+      }
+
+      .hero {
+        background: #0a1a1a
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <a class="nav-logo" href="#">
+      <div class="nav-logomark">📋</div>
+      <div class="nav-brand">khotot<span>.vn</span></div>
+    </a>
+    <div class="nav-pills">
+      <button class="nav-pill active" onclick="goTo('s1',this)">2 thứ duyệt nhanh</button>
+      <button class="nav-pill" onclick="goTo('s2',this)">Tiêu chuẩn ảnh</button>
+      <button class="nav-pill" onclick="goTo('s3',this)">2 con đường</button>
+      <button class="nav-pill" onclick="goTo('s4',this)">Quy trình duyệt</button>
+      <button class="nav-pill" onclick="goTo('s5',this)">Nên & Không</button>
+      <button class="nav-pill" onclick="goTo('s6',this)">Checklist</button>
+      <button class="nav-pill" onclick="goTo('s7',this)">Khi bị từ chối</button>
+    </div>
+    <button class="nav-cta" onclick="window.print()">🖨️ In hướng dẫn</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag"><span class="htag-dot"></span>CHÀO MỪNG KHÁCH HÀNG MỚI · KHOTOT.VN</div>
+        <h1>Sẵn sàng mua hàng<br>tại <em>Khotot.vn?</em></h1>
+        <p class="hero-sub">Chuẩn bị sẵn <strong style="color:#fff">GPKD</strong> và đã đăng ký <strong
+            style="color:#fff">App DSS Club</strong> bằng SĐT của anh/chị — tài khoản sẽ được duyệt ngay trong 48 giờ,
+          có thể bắt đầu lên đơn và nhận hàng ngay sau đó.</p>
+        <div class="hero-chips">
+          <div class="hero-chip">⚡ Duyệt nhanh trong ngày</div>
+          <div class="hero-chip">🛒 Bắt đầu nhập hàng ngay</div>
+          <div class="hero-chip">✅ Đậu ngay lần đầu — không phải làm lại</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat"
+          style="background:linear-gradient(135deg,rgba(0,212,212,.18),rgba(0,184,184,.08));border-color:rgba(0,212,212,.4)">
+          <div style="font-size:36px;margin-bottom:6px">📜</div>
+          <div class="h-stat-num" style="font-size:20px">GPKD</div>
+          <div class="h-stat-label">Giấy phép kinh doanh đứng tên anh/chị <strong style="color:#fff">khớp CCCD</strong>
+          </div>
+        </div>
+        <div class="h-stat"
+          style="background:linear-gradient(135deg,rgba(0,212,212,.18),rgba(0,184,184,.08));border-color:rgba(0,212,212,.4)">
+          <div style="font-size:36px;margin-bottom:6px">📱</div>
+          <div class="h-stat-num" style="font-size:20px">SĐT App DSS</div>
+          <div class="h-stat-label">SĐT đăng ký phải đã có trên <strong style="color:#fff">App DSS Club</strong></div>
+        </div>
+        <div class="h-wide">
+          <div class="h-wide-icon">📇</div>
+          <div class="h-wide-text"><strong>CCCD — giấy tờ cơ bản đầu tiên</strong>Hệ thống dùng để xác minh danh tính
+            anh/chị. Ảnh rõ nét, còn hạn, số khớp form — chuẩn bị một lần là xong.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S1 · 2 THỨ DUYỆT NHANH ══ -->
+  <div id="s1">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">01 · 2 thứ giúp anh/chị được duyệt nhanh</div>
+        <div class="s-title">Chuẩn bị <em>GPKD</em> hoặc <em>SĐT App DSS</em> — duyệt ngay trong ngày</div>
+        <p class="s-lead">Đây là 2 hướng để hệ thống xác nhận anh/chị là đại lý kinh doanh thật. Có 1 trong 2 — duyệt
+          nhanh. Có cả 2 — gần như chắc chắn đậu ngay lần đầu, không phải chờ bổ sung.</p>
+
+        <div class="mat-grid">
+          <div class="mat-card" style="border-color:var(--success);border-width:2px">
+            <div class="mat-photo" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);position:relative">
+              <span style="font-size:80px">📜</span>
+              <div
+                style="position:absolute;top:12px;left:12px;background:var(--success);color:#fff;font-size:10px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:.5px">
+                CÁCH 1 · NHANH NHẤT</div>
+            </div>
+            <div class="mat-body">
+              <div class="mat-name">📜 Giấy phép kinh doanh (GPKD)</div>
+              <div class="mat-desc">Ảnh chụp đủ trang có <strong>tên người đại diện / chủ sở hữu</strong> đứng tên
+                anh/chị. Tên trên GPKD phải khớp với họ tên trên CCCD đã upload.</div>
+              <div
+                style="background:var(--success-light);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:12px;color:var(--success);font-weight:700;line-height:1.5">
+                ⚡ Có GPKD = duyệt NGAY, hệ thống không cần kiểm tra thêm</div>
+              <div class="mat-badge mb-rec" style="margin-top:10px">🟢 Ưu tiên — duyệt cực nhanh</div>
+            </div>
+          </div>
+
+          <div class="mat-card" style="border-color:#f9a825;border-width:2px">
+            <div class="mat-photo" style="background:linear-gradient(135deg,#fff8e1,#ffe082);position:relative">
+              <span style="font-size:80px">📱</span>
+              <div
+                style="position:absolute;top:12px;left:12px;background:#f9a825;color:#fff;font-size:10px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:.5px">
+                CÁCH 2 · THAY THẾ</div>
+            </div>
+            <div class="mat-body">
+              <div class="mat-name">📱 SĐT đã đăng ký App DSS Club</div>
+              <div class="mat-desc">SĐT anh/chị dùng đăng ký Web ETZ phải <strong>chính là SĐT đã có tài khoản trên App
+                  DSS Club</strong>, và đã quét <strong>trên 200 mã</strong> sản phẩm — coi như "lý lịch tín nhiệm" thay
+                GPKD.</div>
+              <div
+                style="background:#fff8e1;border-radius:12px;padding:10px 14px;margin-top:10px;font-size:12px;color:#ef6c00;font-weight:700;line-height:1.5">
+                🔁 Dùng khi chưa có GPKD — hệ thống tra soát SĐT trên App</div>
+              <div class="mat-badge"
+                style="margin-top:10px;background:#fff8e1;color:#ef6c00;font-size:11px;font-weight:800;border-radius:999px;padding:4px 12px;display:inline-block">
+                🟡 Khi chưa có GPKD</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box"
+          style="background:linear-gradient(135deg,#e0f7f7,#b2ebf2);border-color:var(--teal);margin-top:24px">
+          <span style="font-size:20px">⚡</span>
+          <div style="font-size:14px"><strong style="font-size:15px">Mẹo cho anh/chị:</strong> chuẩn bị <strong>cả
+              2</strong> nếu có thể — hệ thống sẽ ưu tiên đường GPKD trước, nếu có vấn đề về tên thì tự động chuyển sang
+            xét App DSS. Khả năng đậu trong lần duyệt đầu tiên gần như tuyệt đối.</div>
+        </div>
+
+        <!-- CCCD reminder block -->
+        <div
+          style="margin-top:32px;background:#fff;border-radius:20px;padding:28px;border:2px dashed var(--danger);display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+          <div style="font-size:64px;flex-shrink:0">📇</div>
+          <div style="flex:1;min-width:280px">
+            <div
+              style="font-size:11px;font-weight:900;color:var(--danger);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">
+              ⚠️ Cùng với 2 thứ trên — CCCD luôn cần</div>
+            <div style="font-size:18px;font-weight:900;margin-bottom:6px">CCCD là giấy tờ cơ bản để xác minh danh tính
+            </div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6">Dù anh/chị đi cách 1 hay cách 2, vẫn cần
+              upload CCCD trước. Ảnh rõ nét, còn hạn, số khớp form — chuẩn bị tốt 1 lần là xong, không phải chụp đi chụp
+              lại. Xem tiêu chuẩn ảnh ở phần 02.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S2 · TIÊU CHUẨN ẢNH CCCD ══ -->
+  <div id="s2" class="section-white">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">02 · Cách chụp CCCD chuẩn</div>
+        <div class="s-title">Ảnh CCCD đạt <em>3 tiêu chí</em> — đậu ngay lần đầu</div>
+        <p class="s-lead">Đây là lý do số 1 khiến anh/chị bị yêu cầu chụp lại. Chỉ cần chụp đúng 1 lần — tiết kiệm 1-2
+          ngày chờ và bắt đầu nhập hàng sớm hơn.</p>
+
+        <div class="id-mock-wrap">
+          <div class="id-mock id-good">
+            <div class="id-status">✅</div>
+            <h4>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h4>
+            <div style="font-size:10px;font-weight:800;color:#bf360c;margin-bottom:6px">CĂN CƯỚC CÔNG DÂN</div>
+            <div class="id-mock-row">Họ tên: <strong>NGUYỄN VĂN A</strong></div>
+            <div class="id-mock-num">012 345 678 901</div>
+            <div class="id-mock-row">Ngày sinh: 01/01/1990</div>
+            <div class="id-mock-row">Có giá trị đến: 01/2030</div>
+            <div class="id-photo-area">👤</div>
+          </div>
+          <div class="id-mock id-bad">
+            <div class="id-status">❌</div>
+            <h4 style="opacity:.5">CỘNG HÒA XÃ HỘI...</h4>
+            <div style="font-size:10px;font-weight:800;color:#b71c1c;margin-bottom:6px;opacity:.4">CĂN CƯỚC ...</div>
+            <div class="id-mock-row" style="opacity:.6">Họ tên: NGU... V... A</div>
+            <div class="id-mock-num">0?2 3?5 6?8 9?1</div>
+            <div class="id-mock-row" style="opacity:.5">Ngày sinh: 01/0?/199?</div>
+            <div class="id-mock-row" style="opacity:.5">Có giá trị đến: ??/2??0</div>
+            <div class="id-photo-area" style="opacity:.4">👤</div>
+          </div>
+        </div>
+
+        <div class="steps-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-title">📸 Rõ nét</div>
+            <div class="step-desc">Không bị lóa, không mờ, không cắt mất góc. Chụp dưới ánh sáng tự nhiên hoặc đặt CCCD
+              trên mặt phẳng tối.</div>
+            <div class="step-tag">Hệ thống sẽ phóng to kiểm tra</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-title">📅 Còn hạn</div>
+            <div class="step-desc">Anh/chị xem dòng "Có giá trị đến" trên CCCD — phải còn hiệu lực. CCCD hết hạn không
+              được chấp nhận trong mọi trường hợp.</div>
+            <div class="step-tag">Anh/chị tự check trước khi upload</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-title">🔢 Số khớp form</div>
+            <div class="step-desc">Dãy 12 số trên ảnh CCCD phải <strong>trùng chính xác</strong> với số anh/chị nhập
+              trong form đăng ký. Sai 1 chữ là bị yêu cầu nhập lại.</div>
+            <div class="step-tag">Đối chiếu kỹ trước khi bấm gửi</div>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <span>⚠️</span>
+          <div><strong>Lóa số là lỗi anh/chị hay gặp nhất.</strong> Khi chụp dưới đèn vàng hoặc nắng chói, dãy số bị
+            phản quang khiến hệ thống đọc không ra. Hãy chụp dưới ánh sáng tản đều, hoặc che bớt nguồn sáng trực tiếp
+            đang chiếu vào CCCD.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S3 · 2 CON ĐƯỜNG ══ -->
+  <div id="s3">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">03 · Cách hệ thống xét duyệt</div>
+        <div class="s-title">Anh/chị sẽ đi <em>1 trong 2 con đường</em> này</div>
+        <p class="s-lead">Tùy giấy tờ anh/chị có sẵn, hệ thống tự động chọn đường duyệt phù hợp. Cả hai đều dẫn đến kết
+          quả: tài khoản kích hoạt + bắt đầu mua hàng.</p>
+
+        <div class="path-wrap">
+          <div class="path-card path-fast">
+            <div class="path-badge pb-fast">⚡ Nhanh nhất</div>
+            <div class="path-icon">📜</div>
+            <div class="path-title">Luồng A — Anh/chị có GPKD</div>
+            <div class="path-sub">Khi upload đủ CCCD + Giấy phép kinh doanh hợp lệ.</div>
+            <ul class="path-list">
+              <li><span>✓</span>Ảnh CCCD đạt 3 tiêu chí ở phần 02</li>
+              <li><span>✓</span>Ảnh GPKD rõ tên người đại diện / chủ sở hữu</li>
+              <li><span>✓</span>Tên trên GPKD <strong>trùng khớp hoàn toàn</strong> với họ tên CCCD của anh/chị</li>
+            </ul>
+            <div class="path-result pr-fast">
+              ⚡ Hệ thống duyệt ngay — KHÔNG cần kiểm tra App DSS Club. Tài khoản kích hoạt + anh/chị nhận email/SMS xác
+              nhận.
+            </div>
+          </div>
+
+          <div class="path-card path-alt">
+            <div class="path-badge pb-alt">🔁 Thay thế</div>
+            <div class="path-icon">📱</div>
+            <div class="path-title">Luồng B — Anh/chị chưa có GPKD</div>
+            <div class="path-sub">Khi chỉ có CCCD nhưng đã dùng App DSS Club lâu dài.</div>
+            <ul class="path-list">
+              <li><span>✓</span>Ảnh CCCD đạt 3 tiêu chí ở phần 02</li>
+              <li><span>✓</span>SĐT đăng ký phải <strong>đã có tài khoản App DSS Club</strong></li>
+              <li><span>✓</span>Tổng số mã đã quét trên App đạt <strong>trên 200 mã</strong></li>
+            </ul>
+            <div class="path-result pr-alt">
+              🔁 Hệ thống tra soát SĐT trên App. Nếu đạt tín nhiệm → duyệt ngay. Nếu chưa đủ → đội ngũ Khotot sẽ chủ
+              động gọi anh/chị hướng dẫn bổ sung GPKD.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <span>📞</span>
+          <div><strong>Trường hợp đặc biệt:</strong> Nếu anh/chị là đại lý quy mô lớn nhưng GPKD chưa kịp cập nhật đúng
+            tên, đội ngũ vẫn có thể trình lên cấp Quản lý để duyệt thủ công dựa trên uy tín. Cứ chia sẻ thật thông tin,
+            đội ngũ sẽ hướng dẫn cụ thể.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S4 · QUY TRÌNH ══ -->
+  <div id="s4" class="section-white">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">04 · Sau khi bạn bấm đăng ký</div>
+        <div class="s-title">Hồ sơ sẽ trải qua <em>3 giai đoạn</em></div>
+        <p class="s-lead">Hiểu quy trình để biết hồ sơ đang ở bước nào — và tự kiểm tra giấy tờ trước khi gửi để vượt
+          qua tất cả các bước trong lần đầu.</p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-title">🔍 Kiểm tra CCCD</div>
+            <div class="step-desc">Sale Admin mở ảnh CCCD <strong>đầu tiên</strong> để xác minh danh tính. Đây là cửa
+              kiên quyết — nếu CCCD không đạt, dừng ngay tại đây.</div>
+            <div class="step-tag">⏱️ 2-5 phút</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-title">📂 Kiểm tra GPKD hoặc App DSS</div>
+            <div class="step-desc">Tùy bạn đã upload GPKD hay chưa, Sale Admin sẽ rẽ nhánh: kiểm tra tên trên GPKD, hoặc
+              tra soát SĐT trên App DSS Club.</div>
+            <div class="step-tag">⏱️ 5-10 phút</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-title">✅ Trả kết quả</div>
+            <div class="step-desc">Đạt → kích hoạt tài khoản, gửi Email/SMS xác nhận. Không đạt → Sale Admin <strong>chủ
+                động gọi/Zalo</strong> hướng dẫn bổ sung, không từ chối thẳng.</div>
+            <div class="step-tag">⏱️ Trong ngày</div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <span>⏰</span>
+          <div><strong>Cam kết xử lý nhanh:</strong> Sale Admin xử lý hồ sơ ngay trong ngày đăng ký, không để tồn đọng
+            qua đêm. Nếu sau 24h vẫn chưa có kết quả, vui lòng liên hệ hotline để được hỗ trợ.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S5 · NÊN & KHÔNG NÊN ══ -->
+  <div id="s5">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">05 · Nên và không nên</div>
+        <div class="s-title">Tránh các <em>lỗi phổ biến</em> khi upload giấy tờ</div>
+        <p class="s-lead">Đây là những sai lầm khiến hồ sơ phải gửi đi gửi lại nhiều lần. Né được = duyệt trong 1 lần.
+        </p>
+
+        <div class="dodont-wrap">
+          <div class="do-card">
+            <div class="dd-title dt-do">✅ Nên làm</div>
+            <ul class="dd-list">
+              <li><span class="db-do">✓</span>Chụp CCCD trên mặt phẳng tối, ánh sáng tản đều — không lóa, không bóng
+              </li>
+              <li><span class="db-do">✓</span>Chụp đủ cả 2 mặt CCCD — mặt trước và mặt sau riêng biệt</li>
+              <li><span class="db-do">✓</span>Đối chiếu lại 12 số CCCD trước khi nhập vào form đăng ký</li>
+              <li><span class="db-do">✓</span>Upload GPKD nếu có — duyệt nhanh, không cần kiểm tra phụ</li>
+              <li><span class="db-do">✓</span>Đảm bảo tên trên GPKD <strong>giống y hệt</strong> tên trên CCCD (cùng
+                dấu, cùng chữ)</li>
+              <li><span class="db-do">✓</span>Nếu dùng SĐT đã có App DSS, kiểm tra số mã quét đạt 200+ trước khi đăng ký
+              </li>
+              <li><span class="db-do">✓</span>Trả lời điện thoại / tin nhắn Zalo của Sale Admin trong ngày để bổ sung
+                kịp thời</li>
+            </ul>
+          </div>
+          <div class="dont-card">
+            <div class="dd-title dt-dont">❌ Không nên</div>
+            <ul class="dd-list">
+              <li><span class="db-dont">✗</span>Chụp CCCD khi đèn vàng / nắng chói khiến dãy số bị lóa không đọc được
+              </li>
+              <li><span class="db-dont">✗</span>Chụp ảnh thiếu góc, mất một phần thông tin của CCCD</li>
+              <li><span class="db-dont">✗</span>Upload CCCD đã hết hạn — sẽ bị từ chối ngay</li>
+              <li><span class="db-dont">✗</span>Nhập số CCCD trong form sai 1-2 chữ so với số trên ảnh</li>
+              <li><span class="db-dont">✗</span>Upload GPKD đứng tên người khác (vợ/chồng/người thân) khác CCCD đã
+                upload</li>
+              <li><span class="db-dont">✗</span>Đăng ký bằng SĐT khác với SĐT đã dùng trên App DSS Club</li>
+              <li><span class="db-dont">✗</span>Bỏ máy / không nghe điện thoại khi Sale Admin gọi xác minh — kéo dài
+                thời gian duyệt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S6 · CHECKLIST ══ -->
+  <div id="s6" class="section-white">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">06 · Checklist trước khi bấm "Đăng ký"</div>
+        <div class="s-title">Tick đủ <em>7 mục</em> — duyệt ngay trong ngày</div>
+        <p class="s-lead">Trước khi bấm nút đăng ký cuối cùng, dành 2 phút kiểm tra lại. Tốt hơn rất nhiều so với chờ
+          Sale Admin gọi yêu cầu bổ sung.</p>
+
+        <div class="checklist">
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Ảnh CCCD đã chụp đủ 2 mặt</strong> — mặt trước (có ảnh và số) và mặt sau (có
+              ngày cấp, nơi cấp)</div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Ảnh CCCD rõ nét, không lóa</strong> — đặc biệt là dãy 12 số phải đọc được rõ
+              ràng từng chữ</div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>CCCD còn hạn sử dụng</strong> — đã kiểm tra dòng "Có giá trị đến" trên ảnh
+            </div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Số CCCD trong form khớp với số trên ảnh</strong> — đã đối chiếu lại từng chữ
+              một</div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Có GPKD?</strong> Đã upload và tên người đại diện trên GPKD trùng khớp họ tên
+              CCCD</div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Không có GPKD?</strong> Đã dùng SĐT đã đăng ký App DSS Club và tổng mã quét đạt
+              trên 200</div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-box">✓</div>
+            <div class="cl-text"><strong>Đảm bảo nghe máy</strong> trong 24h sau khi đăng ký — Sale Admin có thể gọi xác
+              minh hoặc hướng dẫn bổ sung</div>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:24px">
+          <span>📸</span>
+          <div><strong>Mẹo nhỏ:</strong> Chụp CCCD vào ban ngày trên mặt bàn gỗ / vải sẫm màu, để CCCD nằm ngang, máy
+            ảnh hướng vuông góc xuống. Cách này tránh được 90% lỗi lóa số và mất góc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S7 · KHI BỊ TỪ CHỐI ══ -->
+  <div id="s7">
+    <div class="container">
+      <div class="section">
+        <div class="s-label">07 · Khi hồ sơ chưa đạt</div>
+        <div class="s-title">Đừng lo — Sale Admin sẽ <em>chủ động liên lạc</em></div>
+        <p class="s-lead">Hệ thống Khotot ưu tiên hỗ trợ thay vì từ chối thẳng. Bạn sẽ luôn được hướng dẫn cụ thể cần bổ
+          sung gì.</p>
+
+        <div class="penalty-grid">
+          <div class="penalty-card">
+            <div class="pc-icon">📞</div>
+            <div class="pc-title">CCCD bị lóa số / mờ</div>
+            <div class="pc-desc"><em style="color:var(--text)">"CCCD anh/chị cung cấp bị lóa số, phiền anh/chị chụp lại
+                giúp em."</em> — Bạn chỉ cần chụp lại và upload, không phải đăng ký lại từ đầu.</div>
+          </div>
+          <div class="penalty-card">
+            <div class="pc-icon">📝</div>
+            <div class="pc-title">Tên GPKD lệch CCCD</div>
+            <div class="pc-desc"><em style="color:var(--text)">"Tên trên GPKD không khớp với chủ thẻ CCCD, anh chị cung
+                cấp CCCD của người đứng đầu GPKD giúp em."</em> — Upload CCCD của đúng người trên GPKD.</div>
+          </div>
+          <div class="penalty-card">
+            <div class="pc-icon">📲</div>
+            <div class="pc-title">Chưa đủ tín nhiệm App DSS</div>
+            <div class="pc-desc"><em style="color:var(--text)">"Lịch sử quét trên App chưa đủ tín nhiệm, anh chị bổ sung
+                thêm GPKD giúp em nhé."</em> — Cần tải lên GPKD bổ sung để duyệt.</div>
+          </div>
+        </div>
+
+        <div class="warn-box" style="margin-top:24px">
+          <span>💬</span>
+          <div><strong>Quan trọng:</strong> Khi nhận được cuộc gọi / tin nhắn Zalo từ Sale Admin, hãy phản hồi sớm trong
+            ngày. Hồ sơ ở trạng thái <strong>"Chờ bổ sung"</strong> sẽ được duyệt ngay khi bạn cập nhật giấy tờ — không
+            cần đăng ký lại từ đầu.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">khotot.vn</div>
+    <div class="footer-sub">
+      Hướng dẫn đăng ký tài khoản Mua hàng · Web ETZ Khotot.vn · Cập nhật 2026<br>
+      Áp dụng cho tất cả tài khoản đăng ký mới qua tại website Khotot.vn
+    </div>
+  </div>
+
+  <script>
+    function goTo(id, btn) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    const sids = ['s1', 's2', 's3', 's4', 's5', 's6', 's7'];
+    const pills = document.querySelectorAll('.nav-pill');
+    window.addEventListener('scroll', () => {
+      let cur = 0;
+      sids.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 80) cur = i;
+      });
+      pills.forEach((p, i) => p.classList.toggle('active', i === cur));
+    });
+  </script>
+</body>
+
+</html>
