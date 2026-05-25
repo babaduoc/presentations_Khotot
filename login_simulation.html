@@ -821,7 +821,18 @@
         <div class="link-row" style="text-align:left; margin-top:-4px; margin-bottom:8px">
           <a onclick="simulateResend()">Gửi lại mật khẩu qua Zalo</a>
         </div>
-        <button class="btn-primary" onclick="handleS2A()">Đăng nhập</button>
+        <div class="check-row">
+          <input type="checkbox" id="s2a-terms">
+          <label for="s2a-terms" style="font-weight:400; font-size:.82rem; color:#555; margin:0">
+            Tôi đã đọc và đồng ý với
+            <a href="#" onclick="return false">Điều khoản sử dụng</a>
+            và
+            <a href="#" onclick="return false">Chính sách bảo mật</a>
+            của Khotot.vn
+          </label>
+        </div>
+        <div class="check-err" id="s2a-terms-err">Vui lòng đồng ý với điều khoản để tiếp tục</div>
+        <button class="btn-primary" onclick="handleS2A()">Đăng ký và đăng nhập</button>
         <button class="btn-outline" onclick="goTo('s1')">← Quay lại</button>
         <div class="link-row">Chưa có tài khoản? <a onclick="goTo('s3')">Đăng ký ngay</a></div>
       </div>
@@ -1043,6 +1054,8 @@
       currentFlow = n;
       document.getElementById('s2a-pass').value = '';
       clearFieldError('s2a-pass', 's2a-err');
+      document.getElementById('s2a-terms').checked = false;
+      document.getElementById('s2a-terms-err').style.display = 'none';
       currentPhone = flowPhones[n];
       document.getElementById('s1-phone').value = currentPhone;
       clearFieldError('s1-phone', 's1-err');
@@ -1109,6 +1122,11 @@
         return;
       }
       clearFieldError('s2a-pass', 's2a-err');
+      if (!document.getElementById('s2a-terms').checked) {
+        document.getElementById('s2a-terms-err').style.display = 'block';
+        return;
+      }
+      document.getElementById('s2a-terms-err').style.display = 'none';
       document.getElementById('s4-title').textContent = 'Đăng nhập thành công!';
       document.getElementById('s4-msg').textContent = 'Chào mừng SD ' + formatPhone(currentPhone) + ' đã vào Khotot.vn';
       goTo('s4');
