@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mô phỏng Đăng Nhập — Khotot.vn</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #111;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Wrapper ── */
+  .page {
+    display: none;
+    width: 100%;
+    max-width: 900px;
+    min-height: 540px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    animation: fadeIn .25s ease;
+  }
+  .page.active { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Split layout ── */
+  .form-side {
+    background: #fff;
+    width: 42%;
+    min-width: 300px;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .brand-side {
+    flex: 1;
+    background: linear-gradient(135deg, #1a2a4a 0%, #1565C0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-side::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .brand-side h2 {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+  }
+  .brand-side p {
+    color: rgba(255,255,255,.65);
+    text-align: center;
+    margin-top: 8px;
+    font-size: .9rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Logo ── */
+  .logo { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; }
+  .logo-icon {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: #1565C0; color: #fff;
+    font-weight: 900; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-weight: 700; color: #1565C0; font-size: 1.1rem; }
+
+  .logo-dss { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; }
+  .logo-dss-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: #1565C0; color: #fff;
+    font-weight: 900; font-size: 15px;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    line-height: 1;
+  }
+  .logo-dss-text { font-weight: 700; color: #1565C0; font-size: 1rem; line-height: 1.2; }
+  .logo-dss-text small { font-weight: 400; color: #666; font-size: .75rem; display: block; }
+
+  /* ── Form elements ── */
+  .form-header { margin-bottom: 24px; }
+  .form-header h1 { font-size: 1.6rem; font-weight: 700; color: #111; }
+  .form-header p { color: #666; font-size: .9rem; margin-top: 4px; }
+
+  label { display: block; font-size: .8rem; font-weight: 600; color: #333; margin-bottom: 5px; }
+  label span.req { color: #e53935; margin-left: 2px; }
+
+  input[type=text], input[type=password], input[type=tel] {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid #ddd; border-radius: 8px;
+    font-size: .95rem; color: #111; outline: none;
+    transition: border-color .2s;
+  }
+  input:focus { border-color: #1565C0; }
+  input.error { border-color: #e53935; }
+  .field-hint { font-size: .75rem; color: #888; margin-top: 4px; }
+  .field-error { font-size: .75rem; color: #e53935; margin-top: 4px; display: none; }
+
+  .field-group { margin-bottom: 16px; }
+
+  .btn-primary {
+    width: 100%; padding: 12px;
+    background: #1565C0; color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; margin-top: 8px;
+    transition: background .2s, transform .1s;
+  }
+  .btn-primary:hover { background: #1251a3; }
+  .btn-primary:active { transform: scale(.98); }
+
+  .btn-outline {
+    width: 100%; padding: 12px;
+    background: transparent; color: #1565C0;
+    border: 1.5px solid #1565C0; border-radius: 8px;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; margin-top: 8px;
+    transition: background .2s;
+  }
+  .btn-outline:hover { background: #e3f0ff; }
+
+  .link-row { text-align: center; font-size: .85rem; color: #666; margin-top: 12px; }
+  .link-row a { color: #1565C0; text-decoration: none; font-weight: 600; cursor: pointer; }
+  .link-row a:hover { text-decoration: underline; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    color: #1565C0; font-size: .85rem; cursor: pointer;
+    margin-bottom: 12px; text-decoration: none;
+    font-weight: 500;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  /* ── Info boxes ── */
+  .info-box {
+    border-radius: 8px; padding: 12px 14px;
+    margin-bottom: 16px; font-size: .85rem; line-height: 1.5;
+  }
+  .info-box.blue {
+    background: #e3f0ff; border-left: 4px solid #1565C0; color: #0d47a1;
+  }
+  .info-box.orange {
+    background: #fff3e0; border-left: 4px solid #f57c00; color: #e65100;
+  }
+  .info-box strong { display: block; font-size: .9rem; margin-bottom: 4px; }
+
+  /* ── Progress steps ── */
+  .steps {
+    display: flex; gap: 0; margin-bottom: 24px;
+  }
+  .step {
+    flex: 1; text-align: center; font-size: .75rem;
+    padding: 8px 4px; border-bottom: 3px solid #ddd;
+    color: #999; font-weight: 500;
+  }
+  .step.active { border-color: #1565C0; color: #1565C0; font-weight: 700; }
+  .step.done { border-color: #43a047; color: #43a047; }
+
+  /* ── Success screen ── */
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #e8f5e9; color: #43a047;
+    font-size: 2rem; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .success-box { text-align: center; padding: 20px 0; }
+  .success-box h2 { font-size: 1.4rem; color: #111; margin-bottom: 8px; }
+  .success-box p { color: #555; font-size: .9rem; }
+
+  /* ── Demo badge ── */
+  .demo-badge {
+    position: fixed; top: 12px; right: 12px;
+    background: #ff6f00; color: #fff;
+    font-size: .7rem; font-weight: 700; padding: 4px 10px;
+    border-radius: 20px; letter-spacing: .5px;
+    z-index: 100;
+  }
+
+  .footer-text { font-size: .75rem; color: #bbb; text-align: center; margin-top: auto; padding-top: 16px; }
+
+  /* ── Shake animation ── */
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  .shake { animation: shake .35s ease; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .page { flex-direction: column; max-width: 100%; border-radius: 0; min-height: 100vh; }
+    .form-side { width: 100%; }
+    .brand-side { min-height: 120px; }
+    .brand-side h2 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: Nhập số điện thoại
+══════════════════════════════════════ -->
+<div class="page active" id="s1">
+  <div class="form-side">
+    <div>
+      <div class="logo">
+        <div class="logo-icon">K</div>
+        <span class="logo-text">khotot.vn</span>
+      </div>
+      <div class="form-header">
+        <h1>Đăng Nhập</h1>
+        <p>Chào mừng trở lại, SD!</p>
+      </div>
+      <div class="field-group">
+        <label>Số điện thoại<span class="req">*</span></label>
+        <input type="tel" id="s1-phone" placeholder="Nhập số điện thoại của bạn" maxlength="12">
+        <div class="field-error" id="s1-err">Vui lòng nhập số điện thoại</div>
+      </div>
+      <button class="btn-primary" onclick="handleS1()">Tiếp Tục</button>
+      <div class="link-row" style="margin-top:16px">
+        Chưa có tài khoản? <a onclick="goTo('s3')">Đăng ký ngay</a>
+      </div>
+    </div>
+    <div class="footer-text">Khotot.vn — Web Sale Platform</div>
+  </div>
+  <div class="brand-side">
+    <h2>ETZ<br>Web Sale Platform</h2>
+    <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2A: DSSClub hợp lệ (≥200 SN)
+══════════════════════════════════════ -->
+<div class="page" id="s2a">
+  <div class="form-side">
+    <div>
+      <div class="logo">
+        <div class="logo-icon">K</div>
+        <span class="logo-text">khotot.vn</span>
+      </div>
+      <a class="back-link" onclick="goTo('s1')">← Quay lại</a>
+      <div class="form-header">
+        <h1>Đăng Nhập</h1>
+      </div>
+      <div class="info-box blue">
+        <strong>Tài khoản DSS Club đã được tìm thấy!</strong>
+        Chúng tôi đã gửi mật khẩu tạm thời qua Zalo cho số <strong id="s2a-phone-display"></strong>. Vui lòng kiểm tra và nhập vào bên dưới.
+      </div>
+      <div class="field-group">
+        <label>Mật khẩu tạm thời<span class="req">*</span></label>
+        <input type="password" id="s2a-pass" placeholder="Nhập mật khẩu từ Zalo">
+        <div class="field-error" id="s2a-err">Vui lòng nhập mật khẩu</div>
+      </div>
+      <div class="link-row" style="text-align:left; margin-top:-4px; margin-bottom:8px">
+        <a onclick="simulateResend()">Gửi lại mật khẩu qua Zalo</a>
+      </div>
+      <button class="btn-primary" onclick="handleS2A()">Đăng nhập</button>
+      <div class="link-row">Chưa có tài khoản? <a onclick="goTo('s3')">Đăng ký ngay</a></div>
+    </div>
+    <div class="footer-text">Khotot.vn — Web Sale Platform</div>
+  </div>
+  <div class="brand-side">
+    <h2>ETZ<br>Web Sale Platform</h2>
+    <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2B: DSSClub thiếu SN
+══════════════════════════════════════ -->
+<div class="page" id="s2b">
+  <div class="form-side">
+    <div>
+      <div class="logo">
+        <div class="logo-icon">K</div>
+        <span class="logo-text">khotot.vn</span>
+      </div>
+      <a class="back-link" onclick="goTo('s1')">← Quay lại</a>
+      <div class="form-header">
+        <h1>Đăng Nhập</h1>
+      </div>
+      <div class="info-box orange">
+        <strong>Tài khoản DSS Club của bạn chưa đủ điều kiện</strong>
+        Kích hoạt nhanh yêu cầu tối thiểu <strong>200 sản phẩm đã quét</strong>. Tài khoản của bạn hiện chưa đạt mức này.
+      </div>
+      <p style="font-size:.85rem; color:#555; margin-bottom:20px; line-height:1.6">
+        Bạn vẫn có thể đăng ký tài khoản SD theo quy trình thông thường để tiếp tục mua hàng.
+      </p>
+      <button class="btn-primary" onclick="goTo('s3')">Đăng ký theo quy trình thông thường</button>
+      <button class="btn-outline" onclick="goTo('s1')">← Quay lại</button>
+    </div>
+    <div class="footer-text">Khotot.vn — Web Sale Platform</div>
+  </div>
+  <div class="brand-side">
+    <h2>ETZ<br>Web Sale Platform</h2>
+    <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: Đăng ký 3 bước (luồng cũ)
+══════════════════════════════════════ -->
+<div class="page" id="s3">
+  <div class="form-side">
+    <div>
+      <div class="logo-dss">
+        <div class="logo-dss-icon">
+          <span style="font-size:11px;font-weight:900">DSS</span>
+        </div>
+        <div class="logo-dss-text">
+          Digital Smart Systems
+          <small>Web Sale Platform</small>
+        </div>
+      </div>
+      <div class="form-header">
+        <h1>Đăng Ký</h1>
+        <p>Quy trình tạo tài khoản SD (3 bước)</p>
+      </div>
+      <div class="steps">
+        <div class="step active" id="step1-tab">1. Tài khoản</div>
+        <div class="step" id="step2-tab">2. Thông tin</div>
+        <div class="step" id="step3-tab">3. Giấy tờ</div>
+      </div>
+
+      <!-- Bước 1 -->
+      <div id="reg-step1">
+        <p style="font-size:.85rem;font-weight:600;color:#1565C0;margin-bottom:14px">1. Tạo tài khoản</p>
+        <div class="field-group">
+          <label>Số điện thoại hoặc Email<span class="req">*</span></label>
+          <input type="text" id="r-phone" placeholder="Nhập SDT hoặc Email của bạn">
+          <div class="field-error" id="r-phone-err">Vui lòng nhập số điện thoại hoặc email</div>
+        </div>
+        <div class="field-group">
+          <label>Mật khẩu<span class="req">*</span></label>
+          <input type="password" id="r-pass" placeholder="Nhập mật khẩu">
+          <div class="field-hint">Mật khẩu phải có tối thiểu 6 ký tự, ít nhất 1 chữ cái và 1 chữ số</div>
+          <div class="field-error" id="r-pass-err">Mật khẩu không đủ điều kiện</div>
+        </div>
+        <div class="field-group">
+          <label>Nhập lại Mật khẩu<span class="req">*</span></label>
+          <input type="password" id="r-pass2" placeholder="Nhập lại mật khẩu">
+          <div class="field-error" id="r-pass2-err">Mật khẩu không khớp</div>
+        </div>
+        <button class="btn-primary" onclick="handleReg1()">Tiếp tục</button>
+        <div class="link-row">Đã có tài khoản? <a onclick="goTo('s1')">Đăng nhập ngay</a></div>
+      </div>
+
+      <!-- Bước 2 (placeholder) -->
+      <div id="reg-step2" style="display:none">
+        <p style="font-size:.85rem;font-weight:600;color:#1565C0;margin-bottom:14px">2. Thông tin cá nhân</p>
+        <div class="field-group">
+          <label>Họ và tên<span class="req">*</span></label>
+          <input type="text" placeholder="Nhập họ và tên">
+        </div>
+        <div class="field-group">
+          <label>Số CCCD<span class="req">*</span></label>
+          <input type="text" placeholder="Nhập số CCCD (không cần ảnh)">
+        </div>
+        <div class="field-group">
+          <label>Địa chỉ<span class="req">*</span></label>
+          <input type="text" placeholder="Nhập địa chỉ kinh doanh">
+        </div>
+        <button class="btn-primary" onclick="handleReg2()">Tiếp tục</button>
+        <button class="btn-outline" onclick="backReg1()">← Quay lại</button>
+      </div>
+
+      <!-- Bước 3 (placeholder) -->
+      <div id="reg-step3" style="display:none">
+        <p style="font-size:.85rem;font-weight:600;color:#1565C0;margin-bottom:14px">3. Giấy tờ xác thực</p>
+        <div class="field-group">
+          <label>Giấy phép kinh doanh<span class="req">*</span></label>
+          <input type="text" placeholder="Nhập số GPKD">
+        </div>
+        <div style="background:#f5f5f5; border-radius:8px; padding:20px; text-align:center; color:#999; font-size:.85rem; margin-bottom:16px">
+          📎 Upload file GPKD (PDF/JPG)<br>
+          <span style="font-size:.75rem">Kéo thả hoặc nhấn để chọn file</span>
+        </div>
+        <button class="btn-primary" onclick="handleReg3()">Hoàn tất đăng ký</button>
+        <button class="btn-outline" onclick="backReg2()">← Quay lại</button>
+      </div>
+    </div>
+    <div class="footer-text">DSS — Digital Smart Systems</div>
+  </div>
+  <div class="brand-side">
+    <h2>ETZ<br>Web Sale Platform</h2>
+    <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: Đăng nhập / Đăng ký thành công
+══════════════════════════════════════ -->
+<div class="page" id="s4">
+  <div class="form-side" style="justify-content:center">
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h2 id="s4-title">Đăng nhập thành công!</h2>
+      <p id="s4-msg"></p>
+      <button class="btn-primary" style="margin-top:24px" onclick="goTo('s1')">← Thử lại demo</button>
+    </div>
+  </div>
+  <div class="brand-side">
+    <h2>ETZ<br>Web Sale Platform</h2>
+    <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+  </div>
+</div>
+
+<script>
+  // ── Dữ liệu test hardcoded ──
+  const DB = {
+    '0911591602': { type: 'dssclub_valid',   sn: 247 },
+    '0919642503': { type: 'dssclub_invalid', sn: 83  },
+    '0981546438': { type: 'new_user'                 },
+  };
+
+  let currentPhone = '';
+
+  function goTo(screenId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // ── Screen 1: Kiểm tra SĐT ──
+  function handleS1() {
+    const phone = document.getElementById('s1-phone').value.trim();
+    const errEl = document.getElementById('s1-err');
+
+    if (!phone) {
+      document.getElementById('s1-phone').classList.add('error', 'shake');
+      errEl.style.display = 'block';
+      setTimeout(() => document.getElementById('s1-phone').classList.remove('shake'), 400);
+      return;
+    }
+    document.getElementById('s1-phone').classList.remove('error');
+    errEl.style.display = 'none';
+
+    currentPhone = phone;
+    const user = DB[phone];
+
+    if (!user) {
+      showAlert(`⚠️ SĐT "${phone}" không có trong bản demo.\n\nThử:\n• 0911591602 → DSSClub hợp lệ\n• 0919642503 → DSSClub thiếu SN\n• 0981546438 → Luồng đăng ký mới`);
+      return;
+    }
+
+    if (user.type === 'dssclub_valid') {
+      document.getElementById('s2a-phone-display').textContent = formatPhone(phone);
+      goTo('s2a');
+    } else if (user.type === 'dssclub_invalid') {
+      goTo('s2b');
+    } else {
+      goTo('s3');
+    }
+  }
+
+  // ── Screen 2A: Nhập pass tạm ──
+  function handleS2A() {
+    const pass = document.getElementById('s2a-pass').value.trim();
+    const errEl = document.getElementById('s2a-err');
+
+    if (!pass) {
+      document.getElementById('s2a-pass').classList.add('error', 'shake');
+      errEl.style.display = 'block';
+      setTimeout(() => document.getElementById('s2a-pass').classList.remove('shake'), 400);
+      return;
+    }
+    document.getElementById('s2a-pass').classList.remove('error');
+    errEl.style.display = 'none';
+
+    document.getElementById('s4-title').textContent = 'Đăng nhập thành công!';
+    document.getElementById('s4-msg').textContent = `Chào mừng SD ${formatPhone(currentPhone)} đã vào Khotot.vn`;
+    goTo('s4');
+  }
+
+  function simulateResend() {
+    showAlert(`✅ Đã gửi lại mật khẩu tạm thời qua Zalo\ncho số ${formatPhone(currentPhone)}`);
+  }
+
+  // ── Screen 3: Đăng ký bước 1 ──
+  function handleReg1() {
+    const phone = document.getElementById('r-phone').value.trim();
+    const pass  = document.getElementById('r-pass').value;
+    const pass2 = document.getElementById('r-pass2').value;
+    let ok = true;
+
+    if (!phone) {
+      showFieldError('r-phone', 'r-phone-err', 'Vui lòng nhập số điện thoại hoặc email');
+      ok = false;
+    } else { clearFieldError('r-phone', 'r-phone-err'); }
+
+    const passOk = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(pass);
+    if (!passOk) {
+      showFieldError('r-pass', 'r-pass-err', 'Mật khẩu phải có ít nhất 6 ký tự, 1 chữ cái và 1 chữ số');
+      ok = false;
+    } else { clearFieldError('r-pass', 'r-pass-err'); }
+
+    if (pass !== pass2) {
+      showFieldError('r-pass2', 'r-pass2-err', 'Mật khẩu không khớp');
+      ok = false;
+    } else { clearFieldError('r-pass2', 'r-pass2-err'); }
+
+    if (!ok) return;
+
+    document.getElementById('reg-step1').style.display = 'none';
+    document.getElementById('reg-step2').style.display = 'block';
+    document.getElementById('step1-tab').className = 'step done';
+    document.getElementById('step2-tab').className = 'step active';
+  }
+
+  function handleReg2() {
+    document.getElementById('reg-step2').style.display = 'none';
+    document.getElementById('reg-step3').style.display = 'block';
+    document.getElementById('step2-tab').className = 'step done';
+    document.getElementById('step3-tab').className = 'step active';
+  }
+
+  function handleReg3() {
+    document.getElementById('s4-title').textContent = 'Đăng ký thành công!';
+    document.getElementById('s4-msg').textContent = 'Tài khoản của bạn đang chờ admin phê duyệt. Chúng tôi sẽ thông báo qua Zalo khi được duyệt.';
+    goTo('s4');
+  }
+
+  function backReg1() {
+    document.getElementById('reg-step2').style.display = 'none';
+    document.getElementById('reg-step1').style.display = 'block';
+    document.getElementById('step1-tab').className = 'step active';
+    document.getElementById('step2-tab').className = 'step';
+  }
+
+  function backReg2() {
+    document.getElementById('reg-step3').style.display = 'none';
+    document.getElementById('reg-step2').style.display = 'block';
+    document.getElementById('step2-tab').className = 'step active';
+    document.getElementById('step3-tab').className = 'step';
+  }
+
+  // ── Helpers ──
+  function formatPhone(p) {
+    return p.replace(/(\d{4})(\d{3})(\d{3,4})/, '$1 $2 $3');
+  }
+
+  function showFieldError(inputId, errId, msg) {
+    const el = document.getElementById(inputId);
+    el.classList.add('error', 'shake');
+    document.getElementById(errId).textContent = msg;
+    document.getElementById(errId).style.display = 'block';
+    setTimeout(() => el.classList.remove('shake'), 400);
+  }
+
+  function clearFieldError(inputId, errId) {
+    document.getElementById(inputId).classList.remove('error');
+    document.getElementById(errId).style.display = 'none';
+  }
+
+  function showAlert(msg) {
+    alert(msg);
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const active = document.querySelector('.page.active');
+    if (!active) return;
+    const id = active.id;
+    if (id === 's1')  handleS1();
+    if (id === 's2a') handleS2A();
+  });
+</script>
+</body>
+</html>
