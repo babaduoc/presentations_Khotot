@@ -21,6 +21,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-bottom: 52px;
     }
 
     /* ── Wrapper ── */
@@ -390,27 +391,128 @@
       font-size: .9rem;
     }
 
-    /* ── Demo badge ── */
-    .demo-badge {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      background: #ff6f00;
-      color: #fff;
-      font-size: .7rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      letter-spacing: .5px;
-      z-index: 100;
-    }
-
     .footer-text {
       font-size: .75rem;
       color: #bbb;
       text-align: center;
       margin-top: auto;
       padding-top: 16px;
+    }
+
+    /* ── Demo bar (fixed bottom) ── */
+    #demo-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: #111827;
+      border-top: 1px solid #2d3748;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 200;
+      gap: 12px;
+    }
+
+    .dbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dbar-chip {
+      background: #ff6f00;
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: .5px;
+    }
+
+    .dbar-label {
+      color: #6b7280;
+      font-size: .78rem;
+    }
+
+    .fbar-btn {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      background: transparent;
+      transition: all .15s;
+    }
+
+    .fbar-blue {
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    .fbar-orange {
+      border-color: #f97316;
+      color: #fdba74;
+    }
+
+    .fbar-green {
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
+    .fbar-active.fbar-blue {
+      background: #1d4ed8;
+      color: #fff;
+      border-color: #1d4ed8;
+    }
+
+    .fbar-active.fbar-orange {
+      background: #ea580c;
+      color: #fff;
+      border-color: #ea580c;
+    }
+
+    .fbar-active.fbar-green {
+      background: #16a34a;
+      color: #fff;
+      border-color: #16a34a;
+    }
+
+    .dbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .dbar-screen {
+      color: #9ca3af;
+      font-size: .75rem;
+      white-space: nowrap;
+    }
+
+    .dbar-next {
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: #1565C0;
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background .15s;
+    }
+
+    .dbar-next:hover {
+      background: #1251a3;
+    }
+
+    .dbar-next.hidden {
+      display: none;
     }
 
     /* ── Shake animation ── */
@@ -468,8 +570,6 @@
 
 <body>
 
-  <div class="demo-badge">DEMO</div>
-
   <!-- ══════════════════════════════════════
      SCREEN 1: Nhập số điện thoại
 ══════════════════════════════════════ -->
@@ -487,18 +587,19 @@
         <div class="field-group">
           <label>Số điện thoại<span class="req">*</span></label>
           <input type="tel" id="s1-phone" placeholder="Nhập số điện thoại của bạn" maxlength="12">
+          <div class="field-hint">⚠️ Số điện thoại phải có tài khoản Zalo để nhận mật khẩu</div>
           <div class="field-error" id="s1-err">Vui lòng nhập số điện thoại</div>
         </div>
         <button class="btn-primary" onclick="handleS1()">Tiếp Tục</button>
         <div class="link-row" style="margin-top:16px">
-          Chưa có tài khoản? <a onclick="goTo('s3')">Đăng ký ngay</a>
+          Chưa có tài khoản? <a onclick="runFlow(3)">Đăng ký ngay</a>
         </div>
       </div>
       <div class="footer-text">Khotot.vn — Web Sale Platform</div>
     </div>
     <div class="brand-side">
       <h2>ETZ<br>Web Sale Platform</h2>
-      <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+      <p>Hệ thống phân phối trên<br>www.khotot.vn</p>
     </div>
   </div>
 
@@ -512,7 +613,6 @@
           <div class="logo-icon">K</div>
           <span class="logo-text">khotot.vn</span>
         </div>
-        <a class="back-link" onclick="goTo('s1')">← Quay lại</a>
         <div class="form-header">
           <h1>Đăng Nhập</h1>
         </div>
@@ -530,13 +630,14 @@
           <a onclick="simulateResend()">Gửi lại mật khẩu qua Zalo</a>
         </div>
         <button class="btn-primary" onclick="handleS2A()">Đăng nhập</button>
+        <button class="btn-outline" onclick="goTo('s1')">← Quay lại</button>
         <div class="link-row">Chưa có tài khoản? <a onclick="goTo('s3')">Đăng ký ngay</a></div>
       </div>
       <div class="footer-text">Khotot.vn — Web Sale Platform</div>
     </div>
     <div class="brand-side">
       <h2>ETZ<br>Web Sale Platform</h2>
-      <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+      <p>Hệ thống phân phối trên<br>WWW.khotot.vn</p>
     </div>
   </div>
 
@@ -550,7 +651,6 @@
           <div class="logo-icon">K</div>
           <span class="logo-text">khotot.vn</span>
         </div>
-        <a class="back-link" onclick="goTo('s1')">← Quay lại</a>
         <div class="form-header">
           <h1>Đăng Nhập</h1>
         </div>
@@ -562,14 +662,14 @@
         <p style="font-size:.85rem; color:#555; margin-bottom:20px; line-height:1.6">
           Bạn vẫn có thể đăng ký tài khoản SD theo quy trình thông thường để tiếp tục mua hàng.
         </p>
-        <button class="btn-primary" onclick="goTo('s3')">Đăng ký theo quy trình thông thường</button>
+        <button class="btn-primary" onclick="runFlow(3)">Đăng ký theo quy trình thông thường</button>
         <button class="btn-outline" onclick="goTo('s1')">← Quay lại</button>
       </div>
       <div class="footer-text">Khotot.vn — Web Sale Platform</div>
     </div>
     <div class="brand-side">
       <h2>ETZ<br>Web Sale Platform</h2>
-      <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+      <p>Hệ thống phân phối trên<br>WWW.khotot.vn</p>
     </div>
   </div>
 
@@ -618,7 +718,7 @@
             <div class="field-error" id="r-pass2-err">Mật khẩu không khớp</div>
           </div>
           <button class="btn-primary" onclick="handleReg1()">Tiếp tục</button>
-          <div class="link-row">Đã có tài khoản? <a onclick="goTo('s1')">Đăng nhập ngay</a></div>
+          <div class="link-row">Đã có tài khoản? <a onclick="runFlow(1)">Đăng nhập</a></div>
         </div>
 
         <!-- Bước 2 (placeholder) -->
@@ -656,11 +756,11 @@
           <button class="btn-outline" onclick="backReg2()">← Quay lại</button>
         </div>
       </div>
-      <div class="footer-text">DSS — Digital Smart Systems</div>
+      <div class="footer-text">Khotot.vn — Web Sale Platform</div>
     </div>
     <div class="brand-side">
       <h2>ETZ<br>Web Sale Platform</h2>
-      <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+      <p>Hệ thống phân phối trên<br>WWW.khotot.vn</p>
     </div>
   </div>
 
@@ -673,84 +773,143 @@
         <div class="success-icon">✓</div>
         <h2 id="s4-title">Đăng nhập thành công!</h2>
         <p id="s4-msg"></p>
-        <button class="btn-primary" style="margin-top:24px" onclick="goTo('s1')">← Thử lại demo</button>
+        <p style="margin-top:20px; font-size:.8rem; color:#aaa;">Dùng thanh demo bên dưới để chuyển kịch bản tiếp theo
+        </p>
       </div>
     </div>
     <div class="brand-side">
       <h2>ETZ<br>Web Sale Platform</h2>
-      <p>Hệ thống phân phối 3 cấp<br>ADMIN → MD → SD</p>
+      <p>Hệ thống phân phối trên<br>WWW.khotot.vn</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+     DEMO CONTROL BAR (fixed bottom)
+══════════════════════════════════════ -->
+  <div id="demo-bar">
+    <div class="dbar-left">
+      <span class="dbar-chip">DEMO</span>
+      <span class="dbar-label">Kịch bản:</span>
+      <button id="fb1" class="fbar-btn fbar-blue fbar-active" onclick="runFlow(1)">① DSS Club đủ ĐK</button>
+      <button id="fb2" class="fbar-btn fbar-orange" onclick="runFlow(2)">② Thiếu serial</button>
+      <button id="fb3" class="fbar-btn fbar-green" onclick="runFlow(3)">③ Chưa có DSS Club</button>
+    </div>
+    <div class="dbar-right">
+      <span id="dbar-screen" class="dbar-screen">Nhập SĐT</span>
+      <button id="dbar-next" class="dbar-next hidden" onclick="nextFlow()">Tiếp: Luồng 2 →</button>
     </div>
   </div>
 
   <script>
-    // ── Dữ liệu test hardcoded ──
-    const DB = {
-      '0111111111': { type: 'dssclub_valid', sn: 247 },
-      '0222222222': { type: 'dssclub_invalid', sn: 83 },
-      '0333333333': { type: 'new_user' },
-    };
-
+    let currentFlow = 0;
     let currentPhone = '';
+
+    const screenLabels = {
+      s1: 'Nhập SĐT', s2a: 'Nhập pass Zalo',
+      s2b: 'Thông báo thiếu SN', s3: 'Đăng ký (3 bước)', s4: 'Hoàn thành'
+    };
 
     function goTo(screenId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
       window.scrollTo(0, 0);
+      updateDemoBar(screenId);
     }
 
-    // ── Screen 1: Kiểm tra SĐT ──
+    function updateDemoBar(screenId) {
+      document.getElementById('dbar-screen').textContent = screenLabels[screenId] || '';
+      const btn = document.getElementById('dbar-next');
+      if (screenId === 's4') {
+        btn.classList.remove('hidden');
+        if (currentFlow === 1) btn.textContent = 'Tiếp: Luồng 2 →';
+        else if (currentFlow === 2) btn.textContent = 'Tiếp: Luồng 3 →';
+        else btn.textContent = '↩ Xem lại từ đầu';
+      } else {
+        btn.classList.add('hidden');
+      }
+      ['fb1', 'fb2', 'fb3'].forEach((id, i) => {
+        document.getElementById(id).classList.toggle('fbar-active', currentFlow === i + 1);
+      });
+    }
+
+    // ── Chạy luồng theo số ──
+    const flowPhones = { 1: '0912345678', 2: '0987654321', 3: '0901234567' };
+
+    function runFlow(n) {
+      currentFlow = n;
+      document.getElementById('s2a-pass').value = '';
+      clearFieldError('s2a-pass', 's2a-err');
+      currentPhone = flowPhones[n];
+      document.getElementById('s1-phone').value = currentPhone;
+      clearFieldError('s1-phone', 's1-err');
+      goTo('s1');
+    }
+
+    // ── Screen 1: Xác nhận SĐT → dispatch theo luồng ──
     function handleS1() {
       const phone = document.getElementById('s1-phone').value.trim();
-      const errEl = document.getElementById('s1-err');
-
       if (!phone) {
-        document.getElementById('s1-phone').classList.add('error', 'shake');
-        errEl.style.display = 'block';
-        setTimeout(() => document.getElementById('s1-phone').classList.remove('shake'), 400);
+        showFieldError('s1-phone', 's1-err', 'Vui lòng nhập số điện thoại');
         return;
       }
-      document.getElementById('s1-phone').classList.remove('error');
-      errEl.style.display = 'none';
-
       currentPhone = phone;
-      const user = DB[phone];
-
-      if (!user) {
-        showAlert(`⚠️ SĐT "${phone}" không có trong bản demo.\n\nThử:\n• 0111111111 → DSSClub hợp lệ\n• 0222222222 → DSSClub thiếu SN\n• 0333333333 → Luồng đăng ký mới`);
-        return;
-      }
-
-      if (user.type === 'dssclub_valid') {
-        document.getElementById('s2a-phone-display').textContent = formatPhone(phone);
+      document.getElementById('s2a-phone-display').textContent = formatPhone(phone);
+      if (currentFlow === 1) {
         goTo('s2a');
-      } else if (user.type === 'dssclub_invalid') {
+      } else if (currentFlow === 2) {
         goTo('s2b');
       } else {
+        prefillFlow3();
+        resetRegSteps();
         goTo('s3');
       }
+    }
+
+    function prefillFlow3() {
+      document.getElementById('r-phone').value = currentPhone || '0901234567';
+      document.getElementById('r-pass').value = 'Demo123';
+      document.getElementById('r-pass2').value = 'Demo123';
+      clearFieldError('r-phone', 'r-phone-err');
+      clearFieldError('r-pass', 'r-pass-err');
+      clearFieldError('r-pass2', 'r-pass2-err');
+      const inputs2 = document.querySelectorAll('#reg-step2 input[type=text]');
+      ['Nguyễn Văn Demo', '079 204 012 345', '123 Lê Lợi, Q.1, TP.HCM'].forEach((v, i) => { if (inputs2[i]) inputs2[i].value = v; });
+      const inputs3 = document.querySelectorAll('#reg-step3 input[type=text]');
+      if (inputs3[0]) inputs3[0].value = '0123456789';
+    }
+
+    function resetRegSteps() {
+      document.getElementById('reg-step1').style.display = 'block';
+      document.getElementById('reg-step2').style.display = 'none';
+      document.getElementById('reg-step3').style.display = 'none';
+      document.getElementById('step1-tab').className = 'step active';
+      document.getElementById('step2-tab').className = 'step';
+      document.getElementById('step3-tab').className = 'step';
+    }
+
+    function nextFlow() {
+      if (currentFlow === 1) runFlow(2);
+      else if (currentFlow === 2) runFlow(3);
+      else runFlow(1);
     }
 
     // ── Screen 2A: Nhập pass tạm ──
     function handleS2A() {
       const pass = document.getElementById('s2a-pass').value.trim();
-      const errEl = document.getElementById('s2a-err');
-
       if (!pass) {
         document.getElementById('s2a-pass').classList.add('error', 'shake');
-        errEl.style.display = 'block';
+        document.getElementById('s2a-err').style.display = 'block';
         setTimeout(() => document.getElementById('s2a-pass').classList.remove('shake'), 400);
         return;
       }
-      document.getElementById('s2a-pass').classList.remove('error');
-      errEl.style.display = 'none';
-
+      clearFieldError('s2a-pass', 's2a-err');
       document.getElementById('s4-title').textContent = 'Đăng nhập thành công!';
-      document.getElementById('s4-msg').textContent = `Chào mừng SD ${formatPhone(currentPhone)} đã vào Khotot.vn`;
+      document.getElementById('s4-msg').textContent = 'Chào mừng SD ' + formatPhone(currentPhone) + ' đã vào Khotot.vn';
       goTo('s4');
     }
 
     function simulateResend() {
-      showAlert(`✅ Đã gửi lại mật khẩu tạm thời qua Zalo\ncho số ${formatPhone(currentPhone)}`);
+      alert('✅ Đã gửi lại mật khẩu tạm thời qua Zalo\ncho số ' + formatPhone(currentPhone));
     }
 
     // ── Screen 3: Đăng ký bước 1 ──
@@ -793,7 +952,7 @@
 
     function handleReg3() {
       document.getElementById('s4-title').textContent = 'Đăng ký thành công!';
-      document.getElementById('s4-msg').textContent = 'Tài khoản của bạn đang chờ admin phê duyệt. Chúng tôi sẽ thông báo qua Zalo khi được duyệt.';
+      document.getElementById('s4-msg').textContent = 'Tài khoản đang chờ admin phê duyệt. Chúng tôi sẽ thông báo qua Zalo khi được duyệt.';
       goTo('s4');
     }
 
@@ -829,19 +988,16 @@
       document.getElementById(errId).style.display = 'none';
     }
 
-    function showAlert(msg) {
-      alert(msg);
-    }
-
     // Enter key support
     document.addEventListener('keydown', e => {
       if (e.key !== 'Enter') return;
-      const active = document.querySelector('.page.active');
-      if (!active) return;
-      const id = active.id;
+      const id = document.querySelector('.page.active')?.id;
       if (id === 's1') handleS1();
-      if (id === 's2a') handleS2A();
+      else if (id === 's2a') handleS2A();
     });
+
+    // Khởi tạo: chạy luồng 1 mặc định
+    document.addEventListener('DOMContentLoaded', () => runFlow(1));
   </script>
 </body>
 
