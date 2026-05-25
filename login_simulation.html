@@ -438,6 +438,24 @@
       font-size: .78rem;
     }
 
+    .dbar-home {
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: #374151;
+      color: #d1d5db;
+      border: 1px solid #4b5563;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .dbar-home:hover {
+      background: #4b5563;
+      color: #fff;
+    }
+
     .fbar-btn {
       padding: 4px 12px;
       border-radius: 20px;
@@ -566,25 +584,101 @@
       animation: shake .35s ease;
     }
 
-    /* ── Responsive ── */
+    /* ── Responsive (Mobile) ── */
     @media (max-width: 640px) {
+      body {
+        align-items: flex-start;
+        padding: 0;
+        padding-bottom: 64px;
+      }
+
       .page {
         flex-direction: column;
         max-width: 100%;
         border-radius: 0;
-        min-height: 100vh;
+        min-height: calc(100vh - 64px);
+        box-shadow: none;
       }
 
-      .form-side {
-        width: 100%;
-      }
-
+      /* Brand side → compact top strip */
       .brand-side {
-        min-height: 120px;
+        order: -1;
+        min-height: 72px;
+        padding: 16px 20px;
       }
 
       .brand-side h2 {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
+      }
+
+      .brand-side p {
+        display: none;
+      }
+
+      /* Form side → full width, reduced padding */
+      .form-side {
+        width: 100% !important;
+        min-width: unset;
+        padding: 20px 18px;
+      }
+
+      .logo,
+      .logo-dss {
+        margin-bottom: 18px;
+      }
+
+      .form-header {
+        margin-bottom: 16px;
+      }
+
+      .form-header h1 {
+        font-size: 1.35rem;
+      }
+
+      /* Prevent iOS auto-zoom on focus */
+      input[type=text],
+      input[type=password],
+      input[type=tel] {
+        font-size: 16px;
+      }
+
+      /* Demo bar: single-row compact */
+      #demo-bar {
+        height: auto;
+        min-height: 48px;
+        padding: 6px 12px;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .dbar-left {
+        gap: 4px;
+      }
+
+      .dbar-label {
+        display: none;
+      }
+
+      .btn-long {
+        display: none;
+      }
+
+      .fbar-btn {
+        padding: 5px 10px;
+        font-size: .78rem;
+      }
+
+      .dbar-right {
+        gap: 6px;
+      }
+
+      .dbar-screen {
+        font-size: .68rem;
+      }
+
+      .dbar-next {
+        padding: 5px 10px;
+        font-size: .75rem;
       }
     }
   </style>
@@ -859,11 +953,12 @@
 ══════════════════════════════════════ -->
   <div id="demo-bar">
     <div class="dbar-left">
+      <button class="dbar-home" onclick="goTo('s0')" title="Về trang tổng quan">⌂</button>
       <span class="dbar-chip">DEMO</span>
       <span class="dbar-label">Kịch bản:</span>
-      <button id="fb1" class="fbar-btn fbar-blue fbar-active" onclick="runFlow(1)">① DSS Club đủ ĐK</button>
-      <button id="fb2" class="fbar-btn fbar-orange" onclick="runFlow(2)">② Thiếu serial</button>
-      <button id="fb3" class="fbar-btn fbar-green" onclick="runFlow(3)">③ Chưa có DSS Club</button>
+      <button id="fb1" class="fbar-btn fbar-blue fbar-active" onclick="runFlow(1)">① <span class="btn-long">DSS Club đủ ĐK</span></button>
+      <button id="fb2" class="fbar-btn fbar-orange" onclick="runFlow(2)">② <span class="btn-long">Thiếu serial</span></button>
+      <button id="fb3" class="fbar-btn fbar-green" onclick="runFlow(3)">③ <span class="btn-long">Chưa có DSS Club</span></button>
     </div>
     <div class="dbar-right">
       <span id="dbar-screen" class="dbar-screen">Nhập SĐT</span>
