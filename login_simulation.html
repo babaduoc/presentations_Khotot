@@ -555,6 +555,43 @@
     .sc-body span { font-size: .76rem; color: #666; line-height: 1.45; }
     .sc-arrow { color: #9ca3af; font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
 
+    /* ── Terms checkbox ── */
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 12px 0 4px;
+      font-size: .82rem;
+      color: #555;
+      line-height: 1.45;
+    }
+
+    .check-row input[type=checkbox] {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      margin-top: 2px;
+      accent-color: #1565C0;
+      cursor: pointer;
+    }
+
+    .check-row a {
+      color: #1565C0;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .check-row a:hover {
+      text-decoration: underline;
+    }
+
+    .check-err {
+      font-size: .75rem;
+      color: #e53935;
+      display: none;
+      margin-bottom: 4px;
+    }
+
     /* ── Shake animation ── */
     @keyframes shake {
 
@@ -600,18 +637,8 @@
         box-shadow: none;
       }
 
-      /* Brand side → compact top strip */
+      /* Brand side → ẩn hoàn toàn trên mobile */
       .brand-side {
-        order: -1;
-        min-height: 72px;
-        padding: 16px 20px;
-      }
-
-      .brand-side h2 {
-        font-size: 1.1rem;
-      }
-
-      .brand-side p {
         display: none;
       }
 
@@ -882,6 +909,17 @@
             <input type="password" id="r-pass2" placeholder="Nhập lại mật khẩu">
             <div class="field-error" id="r-pass2-err">Mật khẩu không khớp</div>
           </div>
+          <div class="check-row">
+            <input type="checkbox" id="r-terms">
+            <label for="r-terms" style="font-weight:400; font-size:.82rem; color:#555; margin:0">
+              Tôi đã đọc và đồng ý với
+              <a href="#" onclick="return false">Điều khoản sử dụng</a>
+              và
+              <a href="#" onclick="return false">Chính sách bảo mật</a>
+              của Khotot.vn
+            </label>
+          </div>
+          <div class="check-err" id="r-terms-err">Vui lòng đồng ý với điều khoản để tiếp tục</div>
           <button class="btn-primary" onclick="handleReg1()">Tiếp tục</button>
           <div class="link-row">Đã có tài khoản? <a onclick="runFlow(1)">Đăng nhập</a></div>
         </div>
@@ -1038,6 +1076,8 @@
       clearFieldError('r-phone', 'r-phone-err');
       clearFieldError('r-pass', 'r-pass-err');
       clearFieldError('r-pass2', 'r-pass2-err');
+      document.getElementById('r-terms').checked = true;
+      document.getElementById('r-terms-err').style.display = 'none';
       const inputs2 = document.querySelectorAll('#reg-step2 input[type=text]');
       ['Nguyễn Văn Demo', '079 204 012 345', '123 Lê Lợi, Q.1, TP.HCM'].forEach((v, i) => { if (inputs2[i]) inputs2[i].value = v; });
       const inputs3 = document.querySelectorAll('#reg-step3 input[type=text]');
@@ -1100,6 +1140,13 @@
         showFieldError('r-pass2', 'r-pass2-err', 'Mật khẩu không khớp');
         ok = false;
       } else { clearFieldError('r-pass2', 'r-pass2-err'); }
+
+      if (!document.getElementById('r-terms').checked) {
+        document.getElementById('r-terms-err').style.display = 'block';
+        ok = false;
+      } else {
+        document.getElementById('r-terms-err').style.display = 'none';
+      }
 
       if (!ok) return;
 
