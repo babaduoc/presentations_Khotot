@@ -515,6 +515,28 @@
       display: none;
     }
 
+    /* ── Scenario cards (s0) ── */
+    .scenario-list { display: flex; flex-direction: column; gap: 10px; }
+    .scenario-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .scenario-card:hover { border-color: #1565C0; background: #f0f7ff; }
+    .sc-badge {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .9rem; color: #fff; flex-shrink: 0;
+    }
+    .sc-blue   { background: #1d4ed8; }
+    .sc-orange { background: #ea580c; }
+    .sc-green  { background: #16a34a; }
+    .sc-body { flex: 1; }
+    .sc-body strong { display: block; font-size: .88rem; color: #111; margin-bottom: 3px; }
+    .sc-body span { font-size: .76rem; color: #666; line-height: 1.45; }
+    .sc-arrow { color: #9ca3af; font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
+
     /* ── Shake animation ── */
     @keyframes shake {
 
@@ -571,9 +593,58 @@
 <body>
 
   <!-- ══════════════════════════════════════
+     SCREEN 0: Tổng quan kịch bản demo
+══════════════════════════════════════ -->
+  <div class="page active" id="s0">
+    <div class="form-side" style="width:55%">
+      <div>
+        <div class="logo">
+          <div class="logo-icon">K</div>
+          <span class="logo-text">khotot.vn</span>
+        </div>
+        <div class="form-header">
+          <h1>Mô phỏng Đăng Nhập SD</h1>
+          <p>Chọn kịch bản để bắt đầu xem demo</p>
+        </div>
+        <div class="scenario-list">
+          <div class="scenario-card" onclick="runFlow(1)">
+            <div class="sc-badge sc-blue">①</div>
+            <div class="sc-body">
+              <strong>DSS Club đủ điều kiện</strong>
+              <span>SĐT có tài khoản DSS Club + ≥ 200 serial đã quét → hệ thống gửi mật khẩu tạm qua Zalo để đăng nhập ngay</span>
+            </div>
+            <span class="sc-arrow">›</span>
+          </div>
+          <div class="scenario-card" onclick="runFlow(2)">
+            <div class="sc-badge sc-orange">②</div>
+            <div class="sc-body">
+              <strong>DSS Club thiếu serial</strong>
+              <span>SĐT có tài khoản DSS Club nhưng chưa đạt 200 serial → chuyển hướng sang đăng ký thông thường</span>
+            </div>
+            <span class="sc-arrow">›</span>
+          </div>
+          <div class="scenario-card" onclick="runFlow(3)">
+            <div class="sc-badge sc-green">③</div>
+            <div class="sc-body">
+              <strong>Chưa có tài khoản DSS Club</strong>
+              <span>SĐT không phải thành viên DSS Club → đăng ký SD theo quy trình đầy đủ 3 bước</span>
+            </div>
+            <span class="sc-arrow">›</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-text">Khotot.vn — Web Sale Platform</div>
+    </div>
+    <div class="brand-side">
+      <h2>ETZ<br>Web Sale Platform</h2>
+      <p>Hệ thống phân phối trên<br>www.khotot.vn</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
      SCREEN 1: Nhập số điện thoại
 ══════════════════════════════════════ -->
-  <div class="page active" id="s1">
+  <div class="page" id="s1">
     <div class="form-side">
       <div>
         <div class="logo">
@@ -805,7 +876,7 @@
     let currentPhone = '';
 
     const screenLabels = {
-      s1: 'Nhập SĐT', s2a: 'Nhập pass Zalo',
+      s0: 'Tổng quan', s1: 'Nhập SĐT', s2a: 'Nhập pass Zalo',
       s2b: 'Thông báo thiếu SN', s3: 'Đăng ký (3 bước)', s4: 'Hoàn thành'
     };
 
@@ -890,7 +961,7 @@
     function nextFlow() {
       if (currentFlow === 1) runFlow(2);
       else if (currentFlow === 2) runFlow(3);
-      else runFlow(1);
+      else goTo('s0');
     }
 
     // ── Screen 2A: Nhập pass tạm ──
@@ -996,8 +1067,8 @@
       else if (id === 's2a') handleS2A();
     });
 
-    // Khởi tạo: chạy luồng 1 mặc định
-    document.addEventListener('DOMContentLoaded', () => runFlow(1));
+    // Khởi tạo: hiện màn tổng quan
+    document.addEventListener('DOMContentLoaded', () => goTo('s0'));
   </script>
 </body>
 
