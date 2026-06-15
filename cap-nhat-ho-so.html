@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cập nhật hồ sơ đăng ký — Khotot.vn</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="images/Favicon_Khotot.png" type="image/png">
+
+  <style>
+    :root {
+      --bg: #050d1a;
+      --bg2: #081224;
+      --bg3: #0f1e3a;
+      --teal: #036afe;
+      --teal2: #00d4d4;
+      --teal-glow: rgba(0, 184, 184, 0.15);
+      --teal-glow2: rgba(0, 184, 184, 0.30);
+      --teal-border: rgba(0, 184, 184, 0.25);
+      --orange: #ff6b35;
+      --orange-glow: rgba(255, 107, 53, 0.12);
+      --orange-border: rgba(255, 107, 53, 0.30);
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass2: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --text: #ddeef4;
+      --muted: rgba(221, 238, 244, 0.55);
+      --white: #ffffff;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --trans: all .35s cubic-bezier(.4, 0, .2, 1);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: rgba(3, 106, 254, 0.4);
+    }
+
+    body.light {
+      --bg: #f5f9fd;
+      --bg2: #edf4fb;
+      --bg3: #e3eef8;
+      --teal: #036afe;
+      --teal2: #036afe;
+      --teal-glow: rgba(0, 83, 122, 0.1);
+      --teal-glow2: rgba(0, 77, 122, 0.22);
+      --teal-border: rgba(0, 122, 122, 0.22);
+      --orange: #d44a1c;
+      --orange-glow: rgba(212, 74, 28, 0.08);
+      --orange-border: rgba(212, 74, 28, 0.25);
+      --glass: rgba(255, 255, 255, 0.80);
+      --glass2: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(0, 80, 120, 0.12);
+      --text: #0a1a2a;
+      --muted: rgba(10, 26, 42, 0.55);
+      --white: #0a1a2a;
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --input-border: rgba(0, 80, 120, 0.18);
+      --input-focus: rgba(3, 106, 254, 0.25);
+    }
+
+    body.light::before {
+      background-image:
+        linear-gradient(rgba(0, 100, 140, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 100, 140, 0.055) 1px, transparent 1px);
+    }
+
+    body.light .nav {
+      background: rgba(245, 249, 253, 0.88);
+    }
+
+    body.light .nav.sc {
+      background: rgba(245, 249, 253, 0.98);
+    }
+
+    body.light .grad {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 60%, #036afe 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    body.light footer {
+      background: rgba(245, 249, 253, 0.7);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.7;
+      transition: background .4s, color .4s;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 184, 184, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 184, 184, 0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, transparent 40%, var(--bg) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 15px 0;
+      background: rgba(5, 13, 26, .75);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: padding .3s, background .3s;
+    }
+
+    .nav.sc {
+      padding: 10px 0;
+      background: rgba(5, 13, 26, .96);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo img {
+      height: 36px;
+      object-fit: contain;
+    }
+
+    .nav-logo-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--teal);
+      letter-spacing: -.3px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, var(--teal), var(--teal2));
+      color: #e7e7e7;
+      font-weight: 800;
+      font-size: .85rem;
+      padding: 9px 22px;
+      border-radius: 50px;
+      box-shadow: 0 0 22px var(--teal-glow);
+      transition: var(--trans);
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 38px var(--teal-glow2);
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: var(--trans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--glass2);
+      border-color: var(--teal-border);
+      transform: rotate(20deg) scale(1.1);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      transition: stroke .3s;
+    }
+
+    .theme-toggle .ico-moon { display: none; }
+    body.light .theme-toggle .ico-sun { display: none; }
+    body.light .theme-toggle .ico-moon { display: block; }
+
+    /* ===== ORBS ===== */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-t { background: radial-gradient(circle, rgba(0, 184, 184, .22), transparent 70%); }
+    .orb-b { background: radial-gradient(circle, rgba(0, 60, 160, .14), transparent 70%); }
+
+    body.light .orb-t { background: radial-gradient(circle, rgba(0, 122, 122, .10), transparent 70%); }
+    body.light .orb-b { background: radial-gradient(circle, rgba(0, 60, 160, .06), transparent 70%); }
+
+    /* ===== MAIN SECTION ===== */
+    #form-section {
+      min-height: 100vh;
+      padding: 110px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: var(--teal-glow);
+      border: 1px solid var(--teal-border);
+      padding: 7px 18px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    .grad {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 50%, #a8f0ed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ===== FORM CARD ===== */
+    .form-card {
+      background: var(--glass2);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .18);
+    }
+
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 32px 20px;
+      }
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      font-size: .95rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ===== FIELDS ===== */
+    .field-group {
+      margin-bottom: 24px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: .875rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .field-label span.req {
+      color: var(--orange);
+      margin-left: 2px;
+    }
+
+    .field-hint {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 5px;
+      display: block;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: .95rem;
+      transition: border-color .25s, box-shadow .25s;
+      outline: none;
+    }
+
+    .field-input::placeholder {
+      color: var(--muted);
+    }
+
+    .field-input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--input-focus);
+    }
+
+    .field-input.error {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px var(--orange-glow);
+    }
+
+    textarea.field-input {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .field-error {
+      font-size: .8rem;
+      color: var(--orange);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    /* ===== FILE UPLOAD ===== */
+    .upload-zone {
+      border: 2px dashed var(--teal-border);
+      border-radius: var(--radius-sm);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--trans);
+      position: relative;
+      background: var(--teal-glow);
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--teal);
+      background: var(--teal-glow2);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .upload-title {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+
+    .upload-sub {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* ===== FILE PREVIEW ===== */
+    .file-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .file-preview-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass2);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: .82rem;
+      max-width: 100%;
+    }
+
+    .file-preview-item .file-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .file-preview-item .file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+      color: var(--text);
+    }
+
+    .file-preview-item .file-size {
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .file-preview-item .remove-file {
+      cursor: pointer;
+      color: var(--orange);
+      font-size: 1rem;
+      flex-shrink: 0;
+      line-height: 1;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+
+    .file-preview-img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 4px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--teal), var(--teal2));
+      color: #e0e0e0;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 16px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 32px var(--teal-glow2), 0 8px 28px rgba(0, 0, 0, .35);
+      transition: var(--trans);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 0 55px var(--teal-glow2), 0 15px 40px rgba(0, 0, 0, .4);
+    }
+
+    .btn-primary:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    /* ===== ALERTS ===== */
+    .alert {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: .9rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .alert.show { display: block; }
+
+    .alert-error {
+      background: var(--orange-glow);
+      border: 1px solid var(--orange-border);
+      color: var(--orange);
+    }
+
+    /* ===== SUCCESS STATE ===== */
+    #successState {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+    }
+
+    .success-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #22c55e;
+      margin-bottom: 10px;
+    }
+
+    .success-desc {
+      font-size: .95rem;
+      color: var(--muted);
+      max-width: 380px;
+      margin: 0 auto 24px;
+    }
+
+    .success-note {
+      display: inline-block;
+      background: var(--teal-glow);
+      border: 1px solid var(--teal-border);
+      color: var(--teal);
+      font-size: .82rem;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 50px;
+    }
+
+    /* ===== SPINNER ===== */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--glass-border);
+      margin: 36px 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--glass-border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-logo img {
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .footer-logo-name {
+      font-size: .9rem;
+      font-weight: 900;
+      color: var(--teal);
+    }
+
+    .footer-copy {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    .footer-zalo {
+      font-size: .82rem;
+      color: var(--teal);
+      font-weight: 600;
+      transition: opacity .2s;
+    }
+
+    .footer-zalo:hover { opacity: .75; }
+
+    /* ===== SCROLL TOP ===== */
+    .top-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--glass2);
+      border: 1px solid var(--glass-border);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 500;
+      backdrop-filter: blur(10px);
+      transition: var(--trans);
+      color: var(--teal);
+    }
+
+    .top-btn.show { display: flex; }
+    .top-btn:hover { transform: translateY(-3px); background: var(--teal-glow); }
+  </style>
+</head>
+
+<body class="light">
+
+  <!-- NAV -->
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="https://cskh.khotot.vn" class="nav-logo">
+        <img src="images/Logo_Khotot_01.pdf.png" alt="Khotot.vn" onerror="this.style.display='none'">
+        <span class="nav-logo-name">Khotot.vn</span>
+      </a>
+      <div class="nav-actions">
+        <a href="https://khotot.vn" class="nav-btn" target="_blank" rel="noopener">Đăng nhập</a>
+        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Đổi giao diện">
+          <svg class="ico-sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="ico-moon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- MAIN SECTION -->
+  <section id="form-section">
+    <div class="orb orb-t" style="width:600px;height:600px;top:-200px;right:-200px;opacity:.7"></div>
+    <div class="orb orb-b" style="width:400px;height:400px;bottom:-100px;left:-150px;opacity:.5"></div>
+
+    <div class="container">
+
+      <!-- Form Card -->
+      <div class="form-card" id="formCard">
+
+        <div class="form-header">
+          <div class="section-label">📋 Hồ sơ đăng ký</div>
+          <h1>Cập nhật thông tin <span class="grad">đăng ký</span></h1>
+          <p>Điền đầy đủ thông tin bên dưới để hồ sơ của bạn được Admin xét duyệt lại.</p>
+        </div>
+
+        <!-- Global error alert -->
+        <div class="alert alert-error" id="globalAlert"></div>
+
+        <!-- FORM -->
+        <form id="mainForm" novalidate>
+
+          <!-- SĐT -->
+          <div class="field-group">
+            <label class="field-label" for="sdt">
+              Số điện thoại <span class="req">*</span>
+            </label>
+            <input
+              type="tel"
+              id="sdt"
+              class="field-input"
+              placeholder="Ví dụ: 0901234567"
+              inputmode="numeric"
+              autocomplete="tel"
+              maxlength="10"
+            >
+            <span class="field-error" id="sdt-err">Vui lòng nhập số điện thoại 10 chữ số, bắt đầu bằng 0.</span>
+            <span class="field-hint">Số điện thoại 10 chữ số đã đăng ký với hệ thống Khotot.vn</span>
+          </div>
+
+          <!-- CCCD -->
+          <div class="field-group">
+            <label class="field-label" for="so_cccd">
+              Số CCCD / CMND <span class="req">*</span>
+            </label>
+            <input
+              type="text"
+              id="so_cccd"
+              class="field-input"
+              placeholder="Ví dụ: 001234567890"
+              inputmode="numeric"
+              maxlength="12"
+            >
+            <span class="field-error" id="cccd-err">Vui lòng nhập số CCCD (12 chữ số) hoặc CMND (9 chữ số).</span>
+          </div>
+
+          <!-- GPKD Upload -->
+          <div class="field-group">
+            <label class="field-label">
+              Giấy phép kinh doanh (GPKD / ĐKKD) <span class="req">*</span>
+            </label>
+            <div class="upload-zone" id="uploadZone">
+              <input
+                type="file"
+                id="file-gpkd"
+                accept="image/*,application/pdf"
+                multiple
+                capture="environment"
+                onchange="handleFileChange(this)"
+              >
+              <div class="upload-icon">📄</div>
+              <div class="upload-title">Nhấn để chọn file hoặc chụp ảnh</div>
+              <div class="upload-sub">PDF (1 file) hoặc ảnh chụp GPKD (tối đa 2 ảnh) · Mỗi file ≤ 8MB</div>
+            </div>
+            <div class="file-previews" id="filePreviews"></div>
+            <span class="field-error" id="file-err">Vui lòng tải lên GPKD (1 PDF hoặc 1-2 ảnh).</span>
+          </div>
+
+          <!-- Ghi chú -->
+          <div class="field-group">
+            <label class="field-label" for="ghi_chu">Ghi chú bổ sung</label>
+            <textarea
+              id="ghi_chu"
+              class="field-input"
+              placeholder="Thông tin thêm bạn muốn gửi cho Admin (không bắt buộc)..."
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-primary" id="submitBtn">
+            <span id="btnText">🚀 Gửi hồ sơ cập nhật</span>
+            <div id="btnSpinner" class="spinner" style="display:none"></div>
+          </button>
+
+        </form>
+
+        <!-- SUCCESS STATE -->
+        <div id="successState">
+          <div class="success-icon">✅</div>
+          <div class="success-title">Đã gửi hồ sơ thành công!</div>
+          <p class="success-desc">
+            Hồ sơ của bạn đã được tiếp nhận. Admin sẽ xem xét và liên hệ lại qua số điện thoại bạn đã đăng ký trong vòng 1–2 ngày làm việc.
+          </p>
+          <span class="success-note">📞 Giữ điện thoại để nhận thông báo</span>
+        </div>
+
+      </div><!-- /form-card -->
+
+    </div><!-- /container -->
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="images/Logo_Khotot_01.pdf.png" alt="Khotot.vn" onerror="this.style.display='none'">
+        <span class="footer-logo-name">Khotot.vn</span>
+      </div>
+      <span class="footer-copy">© 2026 Khotot.vn. All rights reserved.</span>
+      <a href="https://zalo.me/2350219449710958976" class="footer-zalo" target="_blank" rel="noopener">
+        💬 Hỗ trợ qua Zalo
+      </a>
+    </div>
+  </footer>
+
+  <div class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </div>
+
+
+  <script>
+    // ========= CONFIG =========
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjOVJyn7nu3tIH78KeQTuKdkfRn8w3SrsOKCWy98yGbjiYik5Yle63lawBLAX0tcZ-uA/exec';
+    const MAX_FILE_SIZE_MB = 8;
+    const MAX_IMAGES = 2;
+
+    // ========= THEME =========
+    const savedTheme = localStorage.getItem('khotot-theme') || 'light';
+    document.body.classList.toggle('light', savedTheme === 'light');
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light');
+      localStorage.setItem('khotot-theme', isLight ? 'light' : 'dark');
+    }
+
+    // ========= NAV SCROLL =========
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('sc', window.scrollY > 40);
+      document.getElementById('topBtn').classList.toggle('show', window.scrollY > 300);
+    });
+
+    // ========= FILE HANDLING =========
+    let selectedFiles = [];
+
+    function handleFileChange(input) {
+      const newFiles = Array.from(input.files);
+      input.value = '';
+
+      if (newFiles.length === 0) return;
+
+      // Check types
+      const hasPdf = newFiles.some(f => f.type === 'application/pdf');
+      const hasImg = newFiles.some(f => f.type.startsWith('image/'));
+
+      if (hasPdf && hasImg) {
+        showFileError('Chỉ chọn PDF hoặc ảnh, không trộn lẫn cả hai.');
+        return;
+      }
+
+      // Combine with existing selection
+      let combined = [...selectedFiles, ...newFiles];
+
+      // Validate counts
+      const combinedPdfs = combined.filter(f => f.type === 'application/pdf');
+      const combinedImgs = combined.filter(f => f.type.startsWith('image/'));
+
+      if (combinedPdfs.length > 1) {
+        showFileError('Chỉ được chọn 1 file PDF.');
+        return;
+      }
+      if (combinedPdfs.length > 0 && combinedImgs.length > 0) {
+        showFileError('Không thể kết hợp PDF và ảnh. Chọn 1 loại duy nhất.');
+        return;
+      }
+      if (combinedImgs.length > MAX_IMAGES) {
+        showFileError('Tối đa ' + MAX_IMAGES + ' ảnh. Vui lòng chọn lại.');
+        return;
+      }
+
+      // Validate sizes
+      for (const f of newFiles) {
+        if (f.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+          showFileError('File "' + f.name + '" vượt quá ' + MAX_FILE_SIZE_MB + 'MB. Vui lòng nén hoặc chụp lại.');
+          return;
+        }
+      }
+
+      selectedFiles = combined;
+      hideFileError();
+      renderPreviews();
+    }
+
+    function removeFile(index) {
+      selectedFiles.splice(index, 1);
+      renderPreviews();
+    }
+
+    function renderPreviews() {
+      const container = document.getElementById('filePreviews');
+      container.innerHTML = '';
+
+      selectedFiles.forEach((f, i) => {
+        const isPdf = f.type === 'application/pdf';
+        const sizeKB = (f.size / 1024).toFixed(0);
+        const sizeText = f.size >= 1024 * 1024
+          ? (f.size / (1024 * 1024)).toFixed(1) + ' MB'
+          : sizeKB + ' KB';
+
+        const item = document.createElement('div');
+        item.className = 'file-preview-item';
+        item.style.flexDirection = isPdf ? 'row' : 'column';
+        item.style.alignItems = isPdf ? 'center' : 'flex-start';
+
+        if (isPdf) {
+          item.innerHTML = `
+            <span class="file-icon">📄</span>
+            <span class="file-name">${f.name}</span>
+            <span class="file-size">${sizeText}</span>
+            <button class="remove-file" onclick="removeFile(${i})" title="Xóa">✕</button>
+          `;
+        } else {
+          const url = URL.createObjectURL(f);
+          item.style.width = '100%';
+          item.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;width:100%;">
+              <span class="file-icon">🖼️</span>
+              <span class="file-name">${f.name}</span>
+              <span class="file-size">${sizeText}</span>
+              <button class="remove-file" onclick="removeFile(${i})" title="Xóa" style="margin-left:auto">✕</button>
+            </div>
+            <img src="${url}" class="file-preview-img" alt="${f.name}">
+          `;
+        }
+
+        container.appendChild(item);
+      });
+    }
+
+    function showFileError(msg) {
+      const el = document.getElementById('file-err');
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+
+    function hideFileError() {
+      document.getElementById('file-err').classList.remove('show');
+    }
+
+    // ========= VALIDATION =========
+    function validateForm() {
+      let ok = true;
+
+      // SĐT
+      const sdt = document.getElementById('sdt').value.trim();
+      const sdtErr = document.getElementById('sdt-err');
+      document.getElementById('sdt').classList.remove('error');
+      sdtErr.classList.remove('show');
+      if (!/^0\d{9}$/.test(sdt)) {
+        document.getElementById('sdt').classList.add('error');
+        sdtErr.classList.add('show');
+        ok = false;
+      }
+
+      // CCCD
+      const cccd = document.getElementById('so_cccd').value.trim();
+      const cccdErr = document.getElementById('cccd-err');
+      document.getElementById('so_cccd').classList.remove('error');
+      cccdErr.classList.remove('show');
+      if (!/^\d{9}$/.test(cccd) && !/^\d{12}$/.test(cccd)) {
+        document.getElementById('so_cccd').classList.add('error');
+        cccdErr.classList.add('show');
+        ok = false;
+      }
+
+      // Files
+      hideFileError();
+      if (selectedFiles.length === 0) {
+        showFileError('Vui lòng tải lên GPKD (1 PDF hoặc 1-2 ảnh).');
+        ok = false;
+      }
+
+      return ok;
+    }
+
+    // ========= FILE TO BASE64 =========
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve({ base64: e.target.result, name: file.name, type: file.type });
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ========= SUBMIT =========
+    document.getElementById('mainForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!validateForm()) {
+        window.scrollTo({ top: document.getElementById('mainForm').offsetTop - 100, behavior: 'smooth' });
+        return;
+      }
+
+      // Loading state
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const spinner = document.getElementById('btnSpinner');
+      const globalAlert = document.getElementById('globalAlert');
+
+      btn.disabled = true;
+      btnText.style.display = 'none';
+      spinner.style.display = 'block';
+      globalAlert.classList.remove('show');
+
+      try {
+        // Convert files to base64
+        const filesData = await Promise.all(selectedFiles.map(fileToBase64));
+
+        const payload = {
+          sdt: document.getElementById('sdt').value.trim(),
+          so_cccd: document.getElementById('so_cccd').value.trim(),
+          files: filesData,
+          ghi_chu: document.getElementById('ghi_chu').value.trim()
+        };
+
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // Show success (response is opaque due to no-cors, assume success if no throw)
+        document.getElementById('mainForm').style.display = 'none';
+        document.getElementById('successState').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (err) {
+        globalAlert.textContent = '⚠️ Gửi thất bại — Kiểm tra kết nối mạng và thử lại. Nếu vẫn lỗi, liên hệ Khotot.vn qua Zalo.';
+        globalAlert.classList.add('show');
+        btn.disabled = false;
+        btnText.style.display = 'inline';
+        spinner.style.display = 'none';
+      }
+    });
+
+    // ========= DRAG & DROP =========
+    const zone = document.getElementById('uploadZone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const fakeInput = { files: e.dataTransfer.files, value: '' };
+      handleFileChange(fakeInput);
+    });
+  </script>
+
+</body>
+</html>
